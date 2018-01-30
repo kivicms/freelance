@@ -1,3 +1,6 @@
+<?php
+use app\models\User;
+?>
 <aside class="main-sidebar">
 
     <section class="sidebar">
@@ -27,25 +30,35 @@
         <!-- /.search form -->
 <?php 
 $items = [];
-$items[] = ['label' => 'Справочники', 'options' => ['class' => 'header']];
-$items[] = ['label' => 'Специализации', 'icon' => 'file-code-o', 'url' => ['/catalog/working']];
-$items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
-$items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
-$items[] = ['label' => 'Мои заказы', 'icon' => 'file-code-o', 'url' => ['/order/my/index']];
-
-$items[] = ['label' => 'Пользователи', 'options' => ['class' => 'header']];
-$items[] = ['label' => 'Пользователи', 'icon' => 'file-code-o', 'url' => ['/user-management/user/index']];
-$items[] = ['label' => 'Роли', 'icon' => 'file-code-o', 'url' => ['/user-management/role/index']];
-$items[] = ['label' => 'Права', 'icon' => 'file-code-o', 'url' => ['/user-management/permission/index']];
-$items[] = ['label' => 'Группы прав', 'icon' => 'file-code-o', 'url' => ['/user-management/auth-item-group/index']];
-$items[] = ['label' => 'История посещений', 'icon' => 'file-code-o', 'url' => ['/user-management/user-visit-log/index']];
+if ( User::hasRole('company', false) && \Yii::$app->user->identity->profile->is_verified) {
+    $items[] = ['label' => 'Справочники', 'options' => ['class' => 'header']];
+    $items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
+    $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
+    $items[] = ['label' => 'Мои заказы', 'icon' => 'file-code-o', 'url' => ['/order/my/index']];
+}
 
 
+if (User::hasRole('Admin')) {
 
+    $items[] = ['label' => 'Справочники', 'options' => ['class' => 'header']];
+    $items[] = ['label' => 'Специализации', 'icon' => 'file-code-o', 'url' => ['/catalog/working']];
+    $items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
+    $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
+    
+    
+    $items[] = ['label' => 'Пользователи', 'options' => ['class' => 'header']];
+    $items[] = ['label' => 'Пользователи', 'icon' => 'file-code-o', 'url' => ['/user-management/user/index']];
+    $items[] = ['label' => 'Роли', 'icon' => 'file-code-o', 'url' => ['/user-management/role/index']];
+    $items[] = ['label' => 'Права', 'icon' => 'file-code-o', 'url' => ['/user-management/permission/index']];
+    $items[] = ['label' => 'Группы прав', 'icon' => 'file-code-o', 'url' => ['/user-management/auth-item-group/index']];
+    $items[] = ['label' => 'История посещений', 'icon' => 'file-code-o', 'url' => ['/user-management/user-visit-log/index']];
+    
+    
+    $items[] = ['label' => 'Menu Yii2', 'options' => ['class' => 'header']];
+    $items[] = ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']];
+    $items[] = ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']];
+}
 
-$items[] = ['label' => 'Menu Yii2', 'options' => ['class' => 'header']];
-$items[] = ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii']];
-$items[] = ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']];
 /* $items[]
 $items[]
 $items[]
