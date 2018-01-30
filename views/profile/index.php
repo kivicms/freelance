@@ -41,10 +41,12 @@ $this->params['breadcrumbs'][] = $this->title;
 	            'value' => $model->getFullFio()
 	       ],
 	        'phone',
+	        'www',
 	        [
 	            'attribute' => 'sex',
 	            'value' => Profile::itemAlias('Sex', $model->sex)
-            ]
+            ],
+	        'executed_orders'
 	        
 	        
 	   ]

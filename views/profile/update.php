@@ -33,14 +33,17 @@ $this->params['breeadcrumbs'][] = $this->title;
 		<div class="col-md-4">
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<?= $form->field($model, 'address_legal')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="col-md-3">
+		<div class="col-md-4">
 			<?= $form->field($model, 'address_fact')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-2">
-			<?= $form->field($model, 'type_of_legal')->radioList([0 => 'ООО', 1 => 'ИП']) ?>	
+			<?= $form->field($model, 'type_of_legal')->dropDownList([0 => 'ООО', 1 => 'ИП']) ?>	
+		</div>
+		<div class="col-md-6">
+			<?= $form->field($model, 'www')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-12">
 			<?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
@@ -63,7 +66,7 @@ $this->params['breeadcrumbs'][] = $this->title;
 		</div>
 		
 		<div class="col-md-3">
-			<?= $form->field($model, 'sex')->radioList([0 => 'Женский', 1 => 'Мужской']) ?>	
+			<?= $form->field($model, 'sex')->dropDownList([0 => 'Женский', 1 => 'Мужской']) ?>	
 		</div>		
 
 	</div>

@@ -1,5 +1,8 @@
 <?php
 use kartik\datecontrol\Module;
+use webvimark\modules\UserManagement\components\UserAuthEvent;
+use app\models\Profile;
+use yii\helpers\VarDumper;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -82,10 +85,13 @@ $config = [
         'company' => [            
             'class' => 'app\modules\company\Module',
         ],
+        'order' => [  
+            'class' => 'app\modules\order\Module',            
+        ],
         'user-management' => [
             'class' => 'webvimark\modules\UserManagement\UserManagementModule',
             
-            // 'enableRegistration' => true,
+            'enableRegistration' => true,
             
             // Add regexp validation to passwords. Default pattern does not restrict user and can enter any set of characters.
             // The example below allows user to enter :
@@ -96,7 +102,7 @@ $config = [
             // (?=\S*[\d]): and at least one number
             // $: anchored to the end of the string
             
-            // 'passwordRegexp' => '^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$',
+            //'passwordRegexp' => '^\S*(?=\S{8,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$',
             
             // Here you can set your handler to change layout for any controller or action
             // Tip: you can use this event in any module
@@ -104,8 +110,21 @@ $config = [
                 if ($event->action->uniqueId == 'user-management/auth/login') {
                     $event->action->controller->layout = 'loginLayout.php';
                 }
+                if ($event->action->uniqueId == 'user-management/auth/registration') {
+                    $event->action->controller->layout = 'loginLayout.php';
+                }
                 ;
-            }
+            },
+            'on afterRegistration' => function(UserAuthEvent $event) {                
+                //  Here you can do your own stuff like assign roles, send emails and so on
+                $p = new Profile();
+                $p->user_id = $event->user->id;
+                $p->save(false, ['user_id']);
+                Yii::$app->db->createCommand('insert into auth_assignment (item_name, user_id, created_at) values("company", :user_id, :time)',[
+                    ':user_id' => $event->user->id,
+                    ':time' => time()
+                ])->execute();               
+            },
         ],
         'gallery' => [
             'class' => 'dvizh\gallery\Module',

@@ -3,40 +3,12 @@
 namespace app\controllers;
 
 use Yii;
-use yii\filters\AccessControl;
-use yii\web\Controller;
 use yii\web\Response;
-use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 
 class SiteController extends BaseController
 {
-    /**
-     * @inheritdoc
-     */
-/*     public function behaviors()
-    {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout'],
-                'rules' => [
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
-                ],
-            ],
-        ];
-    } */
 
     /**
      * @inheritdoc
@@ -61,6 +33,10 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        if (! \Yii::$app->user->identity->profile->is_verified) {
+            \Yii::$app->session->setFlash('error', 'Вам необходимо заполнить свой профиль и получить подтверждение администратора!');
+            return $this->redirect(['/profile/index']);            
+        }
         return $this->render('index');
     }
 

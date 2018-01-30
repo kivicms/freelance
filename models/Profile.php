@@ -13,12 +13,14 @@ use Yii;
  * @property string $firstname
  * @property string $middlename
  * @property string $phone
+ * @property string $www
  * @property int $type_of_legal Тип юр лица 0 - ООО, 1 ИП
  * @property string $title Наименование
  * @property string $description Описание
  * @property string $address_fact Фактический адрес
  * @property string $address_legal Юридический адрес
  * @property int $is_verified Проверено: 0 - нет, 1 - да
+ * @property int $executed_orders 
  *
  * @property User $user
  */
@@ -68,9 +70,10 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'type_of_legal', 'is_verified'], 'integer'],
+            [['user_id', 'type_of_legal', 'is_verified', 'executed_orders'], 'integer'],
             [['phone', 'title', 'description', 'address_fact', 'address_legal'], 'required'],
-            [['description'], 'string'],
+            [['description', 'www'], 'string'],
+            [['www'], 'url'],
             [['phone'], 'string', 'max' => 20],
             [['title', 'address_fact', 'address_legal'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -89,6 +92,7 @@ class Profile extends \yii\db\ActiveRecord
             'firstname' => 'Имя',
             'middlename' => 'Отчество',
             'sex' => 'Пол',
+            'www' => 'Сайт',
             'phone' => 'Телефон',
             'type_of_legal' => 'Тип ',
             'title' => 'Наименование',
@@ -96,6 +100,7 @@ class Profile extends \yii\db\ActiveRecord
             'address_fact' => 'Фактический адрес',
             'address_legal' => 'Юридический адрес',
             'is_verified' => 'Проверено',
+            'executed_orders' => 'Выполнено заказов'
         ];
     }
 
