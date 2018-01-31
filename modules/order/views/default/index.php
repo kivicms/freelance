@@ -29,24 +29,4 @@ $this->params['breadcrumbs'][] = $this->title;
     
     
     <?php PanelWidget::end() ?>
-
-    <?php /* GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'id',
-            'user_id',
-            'title',
-            'description:ntext',
-            'budget',
-            //'deadline',
-            //'status',
-            //'is_archive',
-            //'executor_id',
-
-            ['class' => 'yii\grid\ActionColumn'],
-        ],
-    ]); */ ?>
 </div>

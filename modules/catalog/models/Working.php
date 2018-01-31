@@ -33,6 +33,14 @@ class Working extends \yii\db\ActiveRecord
         ];
     }
 
+    public function beforeSave($insert) {
+        if (parent::beforeSave($insert)) {
+            if ($this->parent_id == null)
+                $this->parent_id = 0;
+            return true;
+        }
+        return false;
+    }
     /**
      * @inheritdoc
      */
@@ -40,8 +48,16 @@ class Working extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'parent_id' => 'Parent ID',
-            'title' => 'Title',
+            'parent_id' => 'Родитель',
+            'title' => 'Наименование',
         ];
+    }
+    
+    public function getParentWorking() {
+        return $this->hasOne(Working::className(), ['id' => 'parent_id']);
+    }
+    
+    public function getChildrends() {
+        return $this->hasMany(Working::className(), ['parent_id' => 'id']);
     }
 }

@@ -8,17 +8,19 @@ use app\models\User;
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-                <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
+                <!-- <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>  -->
+                
+                <img src="<?= Yii::$app->user->identity->profile->getImage()->getUrl('160x160') ?>" class="img-circle" alt="User Image"/>
             </div>
             <div class="pull-left info">
-                <p>Виталий Иванов</p>
+                <p><?= Yii::$app->user->identity->profile->shortFio ?></p>
 
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
 
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+        <!-- <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Поиск..."/>
               <span class="input-group-btn">
@@ -26,7 +28,7 @@ use app\models\User;
                 </button>
               </span>
             </div>
-        </form>
+        </form> -->
         <!-- /.search form -->
 <?php 
 $items = [];
@@ -34,7 +36,7 @@ if ( User::hasRole('company', false) && \Yii::$app->user->identity->profile->is_
     $items[] = ['label' => 'Справочники', 'options' => ['class' => 'header']];
     $items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
     $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
-    $items[] = ['label' => 'Мои заказы', 'icon' => 'file-code-o', 'url' => ['/order/my/index']];
+    $items[] = ['label' => 'Мои заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/my']];
 }
 
 

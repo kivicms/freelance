@@ -7,7 +7,10 @@ use yii\helpers\Url;
 
 <div class="order-item">
 	<div class="row">
-    	<div class="col-md-9">
+		<div class="col-md-1">
+			<img src="<?= $model->profile->getImage()->getUrl('70x70') ?>" class="img-circle" alt=""/>
+		</div>
+    	<div class="col-md-8">
     		<h2><a href="<?= Url::toRoute(['/order/default/view', 'id' => $model->id]) ?>"><?= $model->title ?></a></h2>
     	</div>
     	<div class="col-md-3">

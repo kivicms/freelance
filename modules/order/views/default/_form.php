@@ -20,7 +20,7 @@ use kartik\datecontrol\DateControl;
 	        Html::submitButton('Сохранить', ['class' => 'btn btn-success pull-right'])
 	   ]
 	])?>
-    <?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
 
 	<div class="row">
 		<div class="col-md-4">

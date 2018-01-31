@@ -11,6 +11,7 @@ $config = [
     'id' => 'basic',
     'name' => 'RUSSIAN NETWORK',
     'language' => 'ru-RU',
+    'timeZone' =>  'Europe/Moscow',
     'basePath' => dirname(__DIR__),
     'bootstrap' => [
         'log'
@@ -20,6 +21,14 @@ $config = [
         '@npm' => '@vendor/npm-asset'
     ],
     'components' => [
+        'formatter' => [
+            'dateFormat' => 'dd.MM.yyyy',
+            'timeFormat' => 'HH:mm:ss',
+            'datetimeFormat' => 'dd.MM.yyyy HH:mm:ss',
+            'decimalSeparator' => ',',
+            'thousandSeparator' => ' ',
+            'timeZone' => 'Europe/Moscow',
+        ],
         'view' => [
 /*             'theme' => [
                 'pathMap' => [
@@ -34,10 +43,6 @@ $config = [
         'cache' => [
             'class' => 'yii\caching\FileCache'
         ],
-        /* 'user' => [
-            'identityClass' => 'app\models\User',
-            'enableAutoLogin' => true,
-        ], */
         'user' => [
             'class' => 'webvimark\modules\UserManagement\components\UserConfig',
             
@@ -79,6 +84,12 @@ $config = [
      */
     ],
     'modules' => [
+        'report' => [            
+            'class' => 'app\modules\report\Module',          
+        ],
+        'notify' => [  
+            'class' => 'app\modules\notify\Module',            
+        ],
         'catalog' => [
             'class' => 'app\modules\catalog\Module',
         ],
@@ -131,7 +142,7 @@ $config = [
             'imagesStorePath' => dirname(dirname(__DIR__)).'/web/uploads/gallery/images/store', //path to origin images
             'imagesCachePath' => dirname(dirname(__DIR__)).'/web/uploads/gallery/images/cache', //path to resized copies
             'graphicsLibrary' => 'GD',
-            'placeHolderPath' => '@webroot/images/placeHolder.png',
+            'placeHolderPath' => '@webroot/images/placeholder.png',
             // 'adminRoles' => ['administrator', 'admin', 'superadmin'],
         ],
         'datecontrol' =>  [

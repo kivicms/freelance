@@ -8,6 +8,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
+use app\models\Profile;
 
 /**
  * This is the model class for table "order".
@@ -123,10 +124,49 @@ class Order extends \yii\db\ActiveRecord
         return false;
     }
     
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        
+        $this->updateOrder();
+    }
+        
+    private function updateOrder() {
+        $activeOrders = \Yii::$app->db->createCommand('
+            select
+                count(*)
+            from
+                `order`
+            where
+                user_id=:user_id  AND is_archive=0',[':user_id' => \Yii::$app->user->id])->queryScalar();
+        
+        $allOrders = \Yii::$app->db->createCommand('
+            select
+                count(*)
+            from
+                `order`
+            where
+                user_id=:user_id',[':user_id' => \Yii::$app->user->id])->queryScalar();
+        
+        \Yii::$app->db->createCommand('
+            update 
+                profile 
+            set 
+                order_actual_counter=:actual,
+                order_placed_counter=:all
+            where
+                user_id=:user_id
+        ',[
+            ':actual' => $activeOrders,
+            ':all' => $allOrders,
+            ':user_id' => $this->user_id
+        ])->execute();
+    }
+    
     public function afterFind() {
         $this->money = Json::decode($this->money_type);
         return parent::afterFind();
     }
+    
     /**
      * {@inheritdoc}
      */
@@ -153,6 +193,10 @@ class Order extends \yii\db\ActiveRecord
             'updated_by' => 'Редактор'
         ];
     }
+    
+    public function getProfile() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'user_id']);
+    }
 
     /**
      * @return \yii\db\ActiveQuery
@@ -168,5 +212,13 @@ class Order extends \yii\db\ActiveRecord
     public function getOrderWorkings()
     {
         return $this->hasMany(OrderWorking::className(), ['order_id' => 'id']);
+    }
+    
+    public function getMoneyTypesAsArray() {
+        $ret = [];
+        foreach ($this->money as $m) {
+            $ret[] = self::itemAlias('MoneyType', $m);
+        }
+        return $ret;
     }
 }

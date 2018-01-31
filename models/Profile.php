@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the model class for table "profile".
@@ -55,7 +56,18 @@ class Profile extends \yii\db\ActiveRecord
             else
                 return isset($_items[$type]) ? $_items[$type] : false;
     }
-    
+    function behaviors()
+    {
+        return [
+            TimestampBehavior::className(),
+            'images' => [
+                'class' => 'dvizh\gallery\behaviors\AttachImages',
+                'mode' => 'single', //'gallery',
+                'quality' => 60,
+                'galleryId' => 'picture'
+            ],
+        ];
+    }
     /**
      * {@inheritdoc}
      */
@@ -70,9 +82,9 @@ class Profile extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'type_of_legal', 'is_verified', 'executed_orders'], 'integer'],
+            [['user_id', 'type_of_legal', 'is_verified', 'executed_orders', 'sex'], 'integer'],
             [['phone', 'title', 'description', 'address_fact', 'address_legal'], 'required'],
-            [['description', 'www'], 'string'],
+            [['description', 'www', 'lastname', 'firstname', 'middlename'], 'string'],
             [['www'], 'url'],
             [['phone'], 'string', 'max' => 20],
             [['title', 'address_fact', 'address_legal'], 'string', 'max' => 255],
@@ -116,7 +128,14 @@ class Profile extends \yii\db\ActiveRecord
         return implode(' ', [$this->lastname, $this->firstname, $this->middlename]);
     }
     
-    public function getshortFio() {
+    public function getShortFio() {
         return implode('. ', [$this->lastname, mb_substr($this->firstname,0,1), mb_substr($this->middlename,0,1)]);
+    }
+    
+    public function getFullCompanyName() {
+        if ($this->type_of_legal == self::LEGAL_OOO)
+            return $this->title;
+        else
+            return $this->getFullFio();
     }
 }

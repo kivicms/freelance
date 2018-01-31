@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Response;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\User;
 
 class SiteController extends BaseController
 {
@@ -33,6 +34,9 @@ class SiteController extends BaseController
      */
     public function actionIndex()
     {
+        if (User::hasRole('admin')) {
+            return $this->redirect(['/stat/index']);
+        }
         if (! \Yii::$app->user->identity->profile->is_verified) {
             \Yii::$app->session->setFlash('error', 'Вам необходимо заполнить свой профиль и получить подтверждение администратора!');
             return $this->redirect(['/profile/index']);            

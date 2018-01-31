@@ -18,7 +18,7 @@ $this->params['breeadcrumbs'][] = $this->title;
 ?>
 <?= Alert::widget()?>
 <div class="profile-update">
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
 	    'buttons' => [
@@ -67,7 +67,17 @@ $this->params['breeadcrumbs'][] = $this->title;
 		
 		<div class="col-md-3">
 			<?= $form->field($model, 'sex')->dropDownList([0 => 'Женский', 1 => 'Мужской']) ?>	
-		</div>		
+		</div>	
+		<div class="col-md-3">
+		<?= \dvizh\gallery\widgets\Gallery::widget(
+            [
+                'model' => $model,
+                'previewSize' => '50x50',
+                'fileInputPluginLoading' => true,
+                'fileInputPluginOptions' => []
+            ]
+        ); ?>
+		</div>	
 
 	</div>
 	

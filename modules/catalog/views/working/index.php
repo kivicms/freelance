@@ -25,8 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'parent_id',
+//            'id',
+            [
+                'attribute' => 'parent_id',
+                'value' => function($model) {
+                    if ($model->parent_id == 0) 
+                        return '---';
+                    else 
+                        return $model->parentWorking->title;
+                }
+            ],
             'title',
 
             ['class' => 'yii\grid\ActionColumn'],
