@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\notify\models\Notify;
+use app\models\User;
 
 /**
  * NotifySearch represents the model behind the search form of `app\modules\notify\models\Notify`.
@@ -42,11 +43,15 @@ class NotifySearch extends Notify
     public function search($params)
     {
         $query = Notify::find();
+        if (User::hasRole('company',false)) {
+            $query->andWhere(['to_user_id' => \Yii::$app->user->id]);            
+        }
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['created_at' => SORT_DESC]]
         ]);
 
         $this->load($params);

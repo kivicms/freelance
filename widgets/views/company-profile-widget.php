@@ -22,6 +22,8 @@
 			</li>
 			<li class="list-group-item"><b>Подписан на</b> <a class="pull-right"><?= $model->profile->following_counter ?></a>
 			</li>
+			<li class="list-group-item"><b>Выполнено заказов</b> <a class="pull-right"><?= $model->profile->executed_orders ?></a>
+			</li>
 		</ul>
 		<?php 
           if ($model->user_id !== Yii::$app->user->id) {
@@ -62,8 +64,16 @@
 		<strong><i class="fa  fa-check-square-o margin-r-5"></i> Верификация</strong>
 		<p class="text-muted"><?= $model->profile->is_verified ? 'Пользователь верифицирован' : 'Непроверенный пользователь' ?></p>
 		<hr>
+		
+		<strong><i class="fa  fa-sitemap margin-r-5"></i> Веб сайт</strong>
+		<p class="text-muted"><?= $model->profile->www  ?></p>
+		<hr>
+		
+		<strong><i class="fa  fa-phone margin-r-5"></i> Телефон</strong>
+		<p class="text-muted"><?= $model->profile->phone ?></p>
+		<hr>
 
-		<strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+		<!-- <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
 
 		<p>
 			<span class="label label-danger">UI Design</span> <span
@@ -73,7 +83,7 @@
 				class="label label-primary">Node.js</span>
 		</p>
 
-		<hr>
+		<hr> -->
 
 		<strong><i class="fa fa-file-text-o margin-r-5"></i> Описание</strong>
 

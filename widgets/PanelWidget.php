@@ -9,7 +9,9 @@ class PanelWidget extends Widget
 
     public $title = 'Заголовок';
 
-    public $type = 'default';
+    public $type = 'primary';
+    
+    public $solid = false;
 
     public $icon = 'icon-profile';
 
@@ -21,7 +23,10 @@ class PanelWidget extends Widget
 
     public function init()
     {
-        echo '<div class="box">
+        $solid = ($this->solid) ? ' box-solid' : '';
+        
+        
+        echo '<div class="box box-'. $this->type . $solid . '">
                 <div class="box-header with-border">
                     <h3 class="box-title">' . $this->title . '</h3>';
         if (count($this->buttons)) {

@@ -13,7 +13,7 @@ use kartik\datecontrol\DateControl;
 
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(); ?>
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
 	    'buttons' => [
@@ -57,6 +57,33 @@ use kartik\datecontrol\DateControl;
 		</div>
 		<div class="col-md-1">
 			<?= $form->field($model, 'is_archive')->dropDownList(Order::itemAlias('Archive')) ?>	
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-4">
+			<h4>Фотографии</h4>
+			<?= \dvizh\gallery\widgets\Gallery::widget(
+                [
+                    'model' => $model,
+                    'previewSize' => '115x115',
+                    'fileInputPluginLoading' => true,
+                    'fileInputPluginOptions' => []
+                ]
+            ); ?>
+		</div>
+		
+		<div class="col-md-8">
+			<h4>Документы</h4>
+			<?= \nemmo\attachments\components\AttachmentsInput::widget([
+            	'id' => 'file-input', // Optional
+            	'model' => $model,
+            	'options' => [ // Options of the Kartik's FileInput widget
+            		'multiple' => true, // If you want to allow multiple upload, default to false
+            	],
+            	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
+            		'maxFileCount' => 10 // Client max files
+            	]
+            ]) ?>
 		</div>
 	</div>
 

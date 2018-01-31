@@ -9,6 +9,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\controllers\BaseController;
+use app\modules\order\models\OrderResponse;
+use app\models\Profile;
+use app\helpers\NotifyHelper;
+use yii\helpers\Html;
 
 /**
  * DefaultController implements the CRUD actions for Order model.
@@ -29,6 +33,33 @@ class DefaultController extends BaseController
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
+    }
+    
+    public function actionResponse() {
+        $model = new OrderResponse();
+        
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            
+        }
+        return $this->redirect(['view', 'id' => $model->order->id]);
+    }
+    
+    public function actionSetExecutor($id, $executor_id) {
+        $model = $this->findModel($id);
+        $model->executor_id = $executor_id;
+        $model->save(false,['executor_id']);
+        
+        $profile = Profile::find()->where('user_id=:id',[':id' => $executor_id])->one();
+        $profile->executed_orders ++;
+        $profile->save(false, ['executed_orders']);
+        
+        NotifyHelper::send(
+            $profile->user_id, 
+            'Вы назначены исполнителем по заказу #' .  $model->id, 
+            'Вы назначены исполнителем по заказу #' . Html::a($model->title, ['/order/default/view', 'id' => $model->id])
+        );
+        
+        return $this->redirect(['view', 'id' => $model->id]);
     }
     
     public function actionMy()

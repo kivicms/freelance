@@ -3,6 +3,7 @@ use kartik\datecontrol\Module;
 use webvimark\modules\UserManagement\components\UserAuthEvent;
 use app\models\Profile;
 use yii\helpers\VarDumper;
+use app\helpers\NotifyHelper;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
@@ -21,6 +22,15 @@ $config = [
         '@npm' => '@vendor/npm-asset'
     ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'yii2mod.comments' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@yii2mod/comments/messages',
+                ],
+                // ...
+            ],
+        ],
         'formatter' => [
             'dateFormat' => 'dd.MM.yyyy',
             'timeFormat' => 'HH:mm:ss',
@@ -84,6 +94,9 @@ $config = [
      */
     ],
     'modules' => [
+        'comment' => [
+            'class' => 'yii2mod\comments\Module',
+        ],
         'report' => [            
             'class' => 'app\modules\report\Module',          
         ],
@@ -134,16 +147,29 @@ $config = [
                 Yii::$app->db->createCommand('insert into auth_assignment (item_name, user_id, created_at) values("company", :user_id, :time)',[
                     ':user_id' => $event->user->id,
                     ':time' => time()
-                ])->execute();               
+                ])->execute();    
+                NotifyHelper::send(1,
+                    'Зарегистрирован новый пользователь ' . $event->user->username, '');
             },
         ],
         'gallery' => [
             'class' => 'dvizh\gallery\Module',
-            'imagesStorePath' => dirname(dirname(__DIR__)).'/web/uploads/gallery/images/store', //path to origin images
-            'imagesCachePath' => dirname(dirname(__DIR__)).'/web/uploads/gallery/images/cache', //path to resized copies
+            'imagesStorePath' => '@webroot/uploads/gallery/images/store', //path to origin images
+            'imagesCachePath' => '@webroot/uploads/gallery/images/cache', //path to resized copies
             'graphicsLibrary' => 'GD',
             'placeHolderPath' => '@webroot/images/placeholder.png',
             // 'adminRoles' => ['administrator', 'admin', 'superadmin'],
+        ],
+        'attachments' => [
+            'class' => nemmo\attachments\Module::className(),
+            'tempPath' => '@webroot/uploads/temp',
+            'storePath' => '@webroot/uploads/store',
+            'rules' => [ // Rules according to the FileValidator
+                'maxFiles' => 10, // Allow to upload maximum 3 files, default to 3
+                //'mimeTypes' => 'image/png', // Only png images
+                'maxSize' => 1024 * 1024 * 10 // 1 MB
+            ],
+            'tableName' => '{{%attachments}}' // Optional, default to 'attach_file'
         ],
         'datecontrol' =>  [
             'class' => 'kartik\datecontrol\Module',

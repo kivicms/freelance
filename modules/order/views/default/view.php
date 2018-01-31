@@ -6,6 +6,7 @@ use app\widgets\PanelWidget;
 use app\modules\order\models\Order;
 use app\widgets\CompanyProfileWidget;
 use yii\base\Widget;
+use app\widgets\responseorder\ResponseOrderWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\order\models\Order */
@@ -61,25 +62,30 @@ $this->params['breadcrumbs'][] = $this->title;
         		<div class="col-md-12">
         			<?= $model->description ?>
         		</div>
+        		
+        		<?php if (count($model->files) > 0) : ?>
+        		<div class="col-md-12">
+        		<h4>Файлы</h4>
+					<?= \nemmo\attachments\components\AttachmentsTable::widget(['model' => $model]) ?>
+        		</div>
+        		<?php endif; ?>
+        		
+        		<?php $images = $model->getImages(); ?>
+            	<?php if (count($images) > 1) : ?>
+        			<?php foreach ($images as $img ) : ?>
+        			<div class="col-md-3 text-center">
+        				<img src="<?= $img->getUrl('200px200px') ?>" class="img-thumbnail img-fluid" />
+        			</div>
+        			<?php endforeach; ?>
+                <?php endif; ?>
+        		
         	</div>
-            <?php /* DetailView::widget([
-                'model' => $model,
-                'attributes' => [
-                    'id',
-                    'user.profile.title',
-                    'title',
-                    'description:ntext',
-                    [
-                        'label' => 'Бюджет',
-                        'value' => Yii::$app->formatter->asCurrency($model->budget, 'RUB') . ' за ' . Order::itemAlias('BudgetType', $model->budget_type)
-                    ],
-                    'deadline:date',
-                    //'status',
-                    'is_archive',
-                    'executor_id',
-                ],
-            ])  */?>
+        	
+        	
+        	
         	<?php PanelWidget::end()?>
+        	<br>
+        	<?= ResponseOrderWidget::widget(['order' => $model]) ?>
 		</div>	
 	</div>	
 </div>

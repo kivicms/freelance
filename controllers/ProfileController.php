@@ -4,6 +4,7 @@ namespace app\controllers;
 use app\models\Profile;
 use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
+use app\helpers\NotifyHelper;
 
 class ProfileController extends BaseController {
     
@@ -17,6 +18,10 @@ class ProfileController extends BaseController {
         $model = $this->findModel($id);
         
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
+            NotifyHelper::send(1, 
+                'Пользователь изменил свои данные', 
+                ''
+            );
             return $this->redirect(['index', 'id' => $model->user_id]);
         } else { 
             if ($model->hasErrors()) {

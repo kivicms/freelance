@@ -66,6 +66,9 @@ class Profile extends \yii\db\ActiveRecord
                 'quality' => 60,
                 'galleryId' => 'picture'
             ],
+            'fileBehavior' => [
+                'class' => \nemmo\attachments\behaviors\FileBehavior::className()
+            ]
         ];
     }
     /**

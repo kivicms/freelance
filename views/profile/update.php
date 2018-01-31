@@ -64,19 +64,37 @@ $this->params['breeadcrumbs'][] = $this->title;
 		<div class="col-md-3">
 			<?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>	
 		</div>
+	</div>
+	
+	<div class="row">
+			
+		<div class="col-md-4">
 		
-		<div class="col-md-3">
 			<?= $form->field($model, 'sex')->dropDownList([0 => 'Женский', 1 => 'Мужской']) ?>	
-		</div>	
-		<div class="col-md-3">
-		<?= \dvizh\gallery\widgets\Gallery::widget(
-            [
-                'model' => $model,
-                'previewSize' => '50x50',
-                'fileInputPluginLoading' => true,
-                'fileInputPluginOptions' => []
-            ]
-        ); ?>
+		
+			<h4>Аватар</h4>
+    		<?= \dvizh\gallery\widgets\Gallery::widget(
+                [
+                    'model' => $model,
+                    'previewSize' => '50x50',
+                    'fileInputPluginLoading' => true,
+                    'fileInputPluginOptions' => []
+                ]
+            ); ?>
+		</div>
+		
+		<div class="col-md-8">
+			<h4>Документы</h4>
+			<?= \nemmo\attachments\components\AttachmentsInput::widget([
+            	'id' => 'file-input', // Optional
+            	'model' => $model,
+            	'options' => [ // Options of the Kartik's FileInput widget
+            		'multiple' => true, // If you want to allow multiple upload, default to false
+            	],
+            	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
+            		'maxFileCount' => 10 // Client max files
+            	]
+            ]) ?>
 		</div>	
 
 	</div>

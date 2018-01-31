@@ -33,10 +33,10 @@ use app\models\User;
 <?php 
 $items = [];
 if ( User::hasRole('company', false) && \Yii::$app->user->identity->profile->is_verified) {
-    $items[] = ['label' => 'Справочники', 'options' => ['class' => 'header']];
     $items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
     $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
     $items[] = ['label' => 'Мои заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/my']];
+    $items[] = ['label' => 'Уведомления', 'icon' => 'file-code-o', 'url' => ['/notify/default/index']];
 }
 
 

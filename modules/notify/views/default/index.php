@@ -31,7 +31,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     return Html::a($model->title,['/notify/default/view', 'id' => $model->id]);
                 }
             ],
-            'description:ntext',
+            'description:html',
+            
             'created_at:datetime',
             //'updated_at',
             //'status',
