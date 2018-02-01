@@ -100,7 +100,7 @@ class Profile extends \yii\db\ActiveRecord
      */
     public function attributeLabels()
     {
-        return [
+        return [ 
             'id' => 'ID',
             'user_id' => 'User ID',
             'lastname' => 'Фамилия',
@@ -132,7 +132,7 @@ class Profile extends \yii\db\ActiveRecord
     }
     
     public function getShortFio() {
-        return implode('. ', [$this->lastname, mb_substr($this->firstname,0,1), mb_substr($this->middlename,0,1)]);
+        return $this->lastname . ' ' . mb_substr($this->firstname,0,1) . '. ' . mb_substr($this->middlename,0,1) . '.';
     }
     
     public function getFullCompanyName() {

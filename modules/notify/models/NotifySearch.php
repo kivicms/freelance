@@ -43,9 +43,7 @@ class NotifySearch extends Notify
     public function search($params)
     {
         $query = Notify::find();
-        if (User::hasRole('company',false)) {
-            $query->andWhere(['to_user_id' => \Yii::$app->user->id]);            
-        }
+        $query->andWhere(['to_user_id' => \Yii::$app->user->id]);            
 
         // add conditions that should always apply here
 

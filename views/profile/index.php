@@ -24,15 +24,19 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?= DetailView::widget([
 	    'model' => $model,
 	    'attributes' => [
-            [
-                'attribute' => 'type_of_legal',
-                'value' => Profile::itemAlias('Legal', $model->type_of_legal)
-	        ],	           
+	        [
+	            'label' => 'Логотип или аватар',
+	            'format' => 'html',
+	            'value' => '<img src="' . $model->getImage()->getUrl('100x100') . '" />'
+	        ],            	          
 	        'title',
+	        [
+	            'attribute' => 'type_of_legal',
+	            'value' => Profile::itemAlias('Legal', $model->type_of_legal)
+	        ],
 	        'description',
 	        'address_fact',
-	        'address_legal',
-	        
+	        'address_legal',	        
 	        [
 	           'attribute' => 'is_verified',
 	            'value' => Profile::itemAlias('Verified', $model->is_verified)
