@@ -38,6 +38,8 @@ $config = [
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
             'timeZone' => 'Europe/Moscow',
+            'thousandSeparator' => ',',
+            'decimalSeparator' => '.',
         ],
         'view' => [
 /*             'theme' => [
@@ -94,6 +96,9 @@ $config = [
      */
     ],
     'modules' => [
+        'profile' => [
+            'class' => 'app\modules\profile\Module',
+        ],
         'comment' => [
             'class' => 'yii2mod\comments\Module',
         ],
@@ -225,15 +230,15 @@ if (YII_ENV_DEV) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module'
+        'class' => 'yii\debug\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        // 'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '87.241.204.6'],
     ];
     
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '192.168.178.20'],
+        'allowedIPs' => ['127.0.0.1', '::1', '192.168.0.*', '87.241.204.6'],
         'generators' => [ //here
             'crud' => [
                 'class' => 'yii\gii\generators\crud\Generator',

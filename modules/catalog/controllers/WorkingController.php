@@ -29,6 +29,12 @@ class WorkingController extends BaseController
             ],
         ];
     }
+    
+    public function actionTest() {
+        return $this->render('test', [
+            'models' => Working::loadItemsWithParent() 
+        ]);
+    }
 
     /**
      * Lists all Working models.

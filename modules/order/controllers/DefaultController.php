@@ -10,7 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\controllers\BaseController;
 use app\modules\order\models\OrderResponse;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 use app\helpers\NotifyHelper;
 use yii\helpers\Html;
 
@@ -39,7 +39,9 @@ class DefaultController extends BaseController
         $model = new OrderResponse();
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            
+            $order = $this->findModel($model->order_id);
+            $order->response_counter ++;
+            $order->save(false, ['response_counter']);
         }
         return $this->redirect(['view', 'id' => $model->order->id]);
     }
@@ -47,6 +49,7 @@ class DefaultController extends BaseController
     public function actionSetExecutor($id, $executor_id) {
         $model = $this->findModel($id);
         $model->executor_id = $executor_id;
+        $model->is_archive = Order::ARCHIVE_YES;
         $model->save(false,['executor_id']);
         
         $profile = Profile::find()->where('user_id=:id',[':id' => $executor_id])->one();
@@ -59,6 +62,7 @@ class DefaultController extends BaseController
             'Вы назначены исполнителем по заказу #' . Html::a($model->title, ['/order/default/view', 'id' => $model->id])
         );
         
+        \Yii::$app->session->setFlash('info', 'Исполнитель успешно назначен. Заказ перенесен в архив.');
         return $this->redirect(['view', 'id' => $model->id]);
     }
     
@@ -82,7 +86,9 @@ class DefaultController extends BaseController
     public function actionView($id)
     {
         $model = $this->findModel($id);
-        $model->updateCounters(['view_counter' => 1]);
+        if ($model->user_id !== \Yii::$app->user->id) {
+            $model->updateCounters(['view_counter' => 1]);
+        }
         return $this->render('view', [
             'model' => $model,
         ]);
@@ -98,6 +104,7 @@ class DefaultController extends BaseController
         $model = new Order();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->session->setFlash('success', 'Ваш заказ успешно опубликован!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -118,6 +125,7 @@ class DefaultController extends BaseController
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            \Yii::$app->session->setFlash('success', 'Ваш заказ успешно обновлен!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
 

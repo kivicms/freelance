@@ -3,11 +3,9 @@
 namespace app\modules\company\controllers;
 
 use Yii;
-use app\models\Profile;
-use app\models\ProfileSearch;
-use yii\web\Controller;
+use app\modules\profile\models\Profile;
+use app\modules\profile\models\ProfileSearch;
 use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
 use app\controllers\BaseController;
 
 /**
@@ -23,6 +21,7 @@ class DefaultController extends BaseController
     public function actionIndex()
     {
         $searchModel = new ProfileSearch();
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [

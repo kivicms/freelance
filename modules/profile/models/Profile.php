@@ -1,9 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\modules\profile\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
+use app\modules\catalog\models\Working;
+use app\models\User;
 
 /**
  * This is the model class for table "profile".
@@ -27,6 +29,8 @@ use yii\behaviors\TimestampBehavior;
  */
 class Profile extends \yii\db\ActiveRecord
 {
+    public $w_ids = [];
+    
     const LEGAL_OOO = 0;
     const LEGAL_IP = 1;
     
@@ -88,11 +92,23 @@ class Profile extends \yii\db\ActiveRecord
             [['user_id', 'type_of_legal', 'is_verified', 'executed_orders', 'sex'], 'integer'],
             [['phone', 'title', 'description', 'address_fact', 'address_legal'], 'required'],
             [['description', 'www', 'lastname', 'firstname', 'middlename'], 'string'],
-            [['www'], 'url'],
+            [['www'], 'url', 'defaultScheme' => 'http'],
+            [['w_ids'], 'safe'],
             [['phone'], 'string', 'max' => 20],
             [['title', 'address_fact', 'address_legal'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
+    }
+    
+    public function afterFind() {
+        parent::afterFind();
+        $ids = \Yii::$app->db->createCommand('
+            select working_id from user_working where user_id=:user_id
+        ',[
+            ':user_id' => $this->user_id
+        ])->queryAll();
+        
+        $this->w_ids = array_column($ids, 'working_id');
     }
 
     /**
@@ -115,10 +131,12 @@ class Profile extends \yii\db\ActiveRecord
             'address_fact' => 'Фактический адрес',
             'address_legal' => 'Юридический адрес',
             'is_verified' => 'Проверено',
-            'executed_orders' => 'Выполнено заказов'
+            'executed_orders' => 'Выполнено заказов',
+            'w_ids' => 'Категории'
         ];
     }
 
+        
     /**
      * @return \yii\db\ActiveQuery
      */
@@ -140,5 +158,18 @@ class Profile extends \yii\db\ActiveRecord
             return $this->title;
         else
             return $this->getFullFio();
+    }
+    
+    public function getWorkingsAsTitleArray() {
+        $ret = [];
+        $wss = $this->workings;
+        foreach ($wss as $ws) {
+            $ret[] = $ws->title;
+        }
+        return $ret;
+    }
+    
+    public function getWorkings() {
+        return $this->hasMany(Working::className(), ['id' => 'working_id'])->viaTable('user_working', ['user_id' => 'user_id']);
     }
 }

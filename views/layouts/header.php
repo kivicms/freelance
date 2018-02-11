@@ -204,8 +204,7 @@ use yii\base\Widget;
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <!-- <img src="<?= $directoryAsset ?>/img/user2-160x160.jpg" class="img-circle"
-                                 alt="User Image"/> -->
+
 							<img src="<?= Yii::$app->user->identity->profile->getImage()->getUrl('160x160') ?>" class="img-circle" alt="User Image"/>
                             
                             <p>
@@ -225,7 +224,7 @@ use yii\base\Widget;
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="<?= Url::toRoute(['/profile/index', 'id' => Yii::$app->user->id]) ?>" class="btn btn-default btn-flat">Профиль</a>
+                                <a href="<?= Url::toRoute(['/profile/default/index']) ?>" class="btn btn-default btn-flat">Профиль</a>
                             </div>
                             <div class="pull-right">
                                 <?= Html::a(

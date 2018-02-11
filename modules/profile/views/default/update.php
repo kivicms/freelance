@@ -10,14 +10,19 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use app\widgets\Alert;
 use yii\base\Widget;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 use kartik\datecontrol\DateControl;
+use kartik\sortinput\SortableInput;
+use kartik\widgets\Select2;
+use app\modules\catalog\models\Working;
+use yii\helpers\VarDumper;
 
 $this->title = 'Редактирование профиля';
 $this->params['breeadcrumbs'][] = $this->title;
 ?>
 <?= Alert::widget()?>
 <div class="profile-update">
+
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
@@ -39,16 +44,35 @@ $this->params['breeadcrumbs'][] = $this->title;
 		<div class="col-md-4">
 			<?= $form->field($model, 'address_fact')->textInput(['maxlength' => true]) ?>
 		</div>
+		<div class="col-md-8">
+			<?php
+			echo $form->field($model, 'w_ids')->widget(
+    			Select2::className(), [
+    			    'name' => 'kv-state-240', 
+    			    'data' => Working::loadItemsWithParent(),
+    			    'size' => Select2::MEDIUM,
+    			    'options' => ['placeholder' => 'Выберите категорию ...', 'multiple' => true],
+    			    'pluginOptions' => [
+    			        'tags' => true,
+    			        'allowClear' => true
+    			    ],
+    			]
+			)
+			?>
+
+			
+		</div>
 		<div class="col-md-2">
 			<?= $form->field($model, 'type_of_legal')->dropDownList([0 => 'ООО', 1 => 'ИП']) ?>	
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-2">
 			<?= $form->field($model, 'www')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-12">
 			<?= $form->field($model, 'description')->textarea(['rows' => 4]) ?>
 		</div>
 	</div>
+
 
 	<h4>Контактные данные</h4>	
 	<div class="row">
@@ -64,7 +88,7 @@ $this->params['breeadcrumbs'][] = $this->title;
 		<div class="col-md-3">
 			<?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>	
 		</div>
-	</div>
+	</div>	
 	
 	<div class="row">
 			
@@ -84,7 +108,7 @@ $this->params['breeadcrumbs'][] = $this->title;
 		</div>
 		
 		<div class="col-md-8">
-			<h4>Документы</h4>
+			<h4>Документы и портфолио</h4>
 			<?= \nemmo\attachments\components\AttachmentsInput::widget([
             	'id' => 'file-input', // Optional
             	'model' => $model,

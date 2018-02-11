@@ -19,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-3">
 			<?= CompanyProfileWidget::widget([
-			    'model' => $model
+			    'model' => $model->profile
 			]) ?>
 		</div>	
 		<div class="col-md-9">
@@ -46,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
         	])?>
         	<div class="row">
         		<div class="col-md-12">
+        			<img class="img-circle img-bordered-sm" src="<?= $model->getImage()->getUrl('50x50') ?>" style="float: left">
         			<h2><?= $model->title ?></h2>
       				<span class="text-green"><strong>
       					<?= Yii::$app->formatter->asCurrency($model->budget, 'RUR') . ' ' 
@@ -72,11 +73,19 @@ $this->params['breadcrumbs'][] = $this->title;
         		
         		<?php $images = $model->getImages(); ?>
             	<?php if (count($images) > 1) : ?>
-        			<?php foreach ($images as $img ) : ?>
-        			<div class="col-md-3 text-center">
-        				<img src="<?= $img->getUrl('200px200px') ?>" class="img-thumbnail img-fluid" />
+            	
+        			<?php 
+        			$items = [];
+        			foreach ($images as $img ) {
+        			     $items[] = [
+        			         'url' => $model->image->getUrl(),
+        			         'src' => $img->getUrl('200px200px')
+        			     ];
+        			} ?>
+        			<div class="col-md-12">
+        			<h4>Фотографии</h4>
+        			<?= dosamigos\gallery\Gallery::widget(['items' => $items]);?>
         			</div>
-        			<?php endforeach; ?>
                 <?php endif; ?>
         		
         	</div>

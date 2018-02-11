@@ -12,6 +12,7 @@ use yii\helpers\Url;
 		</div>
     	<div class="col-md-8">
     		<h3><a href="<?= Url::toRoute(['/company/default/view', 'id' => $model->id]) ?>"><?= $model->title ?></a></h3>
+    		<?=  implode(', ', $model->workingsAsTitleArray) ?>
     	</div>
     	<div class="col-md-3">
     	</div>

@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\modules\profile\models;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 
 /**
  * ProfileSearch represents the model behind the search form of `app\models\Profile`.
@@ -41,6 +41,7 @@ class ProfileSearch extends Profile
      */
     public function search($params)
     {
+        
         $query = Profile::find();
         $query->leftJoin('auth_assignment','auth_assignment.user_id=profile.user_id');
         
@@ -51,10 +52,14 @@ class ProfileSearch extends Profile
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-        ]);
-
+        ]);        
+        
         $this->load($params);
 
+        if (isset($_POST['CompanySearchForm'])) {
+            $this->title = $_POST['CompanySearchForm']['title'];    
+        }
+        
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');

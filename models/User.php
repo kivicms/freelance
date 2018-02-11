@@ -2,7 +2,7 @@
 namespace app\models;
 
 use webvimark\modules\UserManagement\models\User as WUser;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 
 class User extends WUser {
     

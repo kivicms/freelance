@@ -1,28 +1,32 @@
 <?php
+use yii\helpers\Url;
+use yii\helpers\Html;
+
 ?>
 
 
 <div class="box box-primary">
 	<div class="box-body box-profile">
-		<!-- <img class="profile-user-img img-responsive img-circle"
-			src="../../dist/img/user4-128x128.jpg" alt="User profile picture"> -->
 
-		<img src="<?= $model->profile->getImage()->getUrl('128x128') ?>" class="profile-user-img img-responsive img-circle" alt="<?= $model->profile->title ?>"/>
+		<img src="<?= $model->getImage()->getUrl('128x128') ?>" class="profile-user-img img-responsive img-circle" alt="<?= $model->title ?>"/>
 
-		<h3 class="profile-username text-center"><?= $model->profile->fullFio ?></h3>
+		<h3 class="profile-username text-center"><?= $model->fullFio ?></h3>
 
-		<p class="text-muted text-center"><?= $model->profile->fullCompanyName ?></p>
+		<p class="text-muted text-center"><?= $model->fullCompanyName ?></p>
+
+		<p class="text-muted text-center"><?= implode(' • ', $model->workingsAsTitleArray)?></p>
 
 		<ul class="list-group list-group-unbordered">
-			<li class="list-group-item"><b>Размещенных заказов</b> <a class="pull-right"><?= $model->profile->order_placed_counter ?></a>
+
+			<li class="list-group-item"><b>Размещенных заказов</b> <a class="pull-right"><?= $model->order_placed_counter ?></a>
 			</li>
-			<li class="list-group-item"><b>Актуальных заказов</b> <a class="pull-right"><?= $model->profile->order_actual_counter ?></a>
+			<li class="list-group-item"><b>Актуальных заказов</b> <a class="pull-right"><?= $model->order_actual_counter ?></a>
 			</li>
-			<li class="list-group-item"><b>Подписчиков</b> <a class="pull-right"><?= $model->profile->follower_counter ?></a>
+			<li class="list-group-item"><b>Подписчиков</b> <a class="pull-right"><?= $model->follower_counter ?></a>
 			</li>
-			<li class="list-group-item"><b>Подписан на</b> <a class="pull-right"><?= $model->profile->following_counter ?></a>
+			<li class="list-group-item"><b>Подписан на</b> <a class="pull-right"><?= $model->following_counter ?></a>
 			</li>
-			<li class="list-group-item"><b>Выполнено заказов</b> <a class="pull-right"><?= $model->profile->executed_orders ?></a>
+			<li class="list-group-item"><b>Выполнено заказов</b> <a class="pull-right"><?= $model->executed_orders ?></a>
 			</li>
 		</ul>
 		<?php 
@@ -38,10 +42,14 @@
                   ':user_id' => $model->user_id,
                   ':follower_id' => Yii::$app->user->id
               ])->queryScalar();
-		      
+		      Url::remember();
 		      if ($foll ==  0) {
-		          echo '<a href="#" class="btn btn-primary btn-block"><b>Подписаться</b></a>';          
+		          echo '<a href="' . Url::toRoute(['/company/foll/follow', 'user_id' => $model->user_id, 'follow' => true]) . '" class="btn btn-primary btn-block"><b>Подписаться</b></a>';          
+		      } else {
+		          echo '<a href="' . Url::toRoute(['/company/foll/follow', 'user_id' => $model->user_id, 'follow' => false]) . '" class="btn btn-warning btn-block"><b>Прекратить подписку</b></a>';
 		      }
+		  } else {
+		      echo Html::a('Редактировать',['/profile/default/update', 'id' => Yii::$app->user->id], ['class' => 'btn btn-info btn-block']); 
 		  }
 		?>
 		
@@ -58,19 +66,19 @@
 	<!-- /.box-header -->
 	<div class="box-body">		
 		<strong><i class="fa fa-map-marker margin-r-5"></i> Местоположение</strong>
-		<p class="text-muted"><?= $model->profile->address_fact ?></p>
+		<p class="text-muted"><?= $model->address_fact ?></p>
 		<hr>
 		
 		<strong><i class="fa  fa-check-square-o margin-r-5"></i> Верификация</strong>
-		<p class="text-muted"><?= $model->profile->is_verified ? 'Пользователь верифицирован' : 'Непроверенный пользователь' ?></p>
+		<p class="text-muted"><?= $model->is_verified ? 'Пользователь верифицирован' : 'Непроверенный пользователь' ?></p>
 		<hr>
 		
 		<strong><i class="fa  fa-sitemap margin-r-5"></i> Веб сайт</strong>
-		<p class="text-muted"><?= $model->profile->www  ?></p>
+		<p class="text-muted"><?= $model->www  ?></p>
 		<hr>
 		
 		<strong><i class="fa  fa-phone margin-r-5"></i> Телефон</strong>
-		<p class="text-muted"><?= $model->profile->phone ?></p>
+		<p class="text-muted"><?= $model->phone ?></p>
 		<hr>
 
 		<!-- <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
@@ -87,7 +95,7 @@
 
 		<strong><i class="fa fa-file-text-o margin-r-5"></i> Описание</strong>
 
-		<p><?= $model->profile->description ?></p>
+		<p><?= $model->description ?></p>
 	</div>
 	<!-- /.box-body -->
 </div>

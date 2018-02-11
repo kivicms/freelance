@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\order\models;
 
 use Yii;
@@ -8,7 +7,7 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 
 /**
  * This is the model class for table "order".
@@ -19,6 +18,7 @@ use app\models\Profile;
  * @property string $description
  * @property double $budget
  * @property int $budget_type
+ * @property string $start
  * @property string $deadline
  * @property int $status Статус
  * @property int $is_archive В архиве
@@ -48,9 +48,14 @@ class Order extends \yii\db\ActiveRecord
     const BUDGET_HOUR = 1;
     const BUDGET_MONTH = 2;
     const BUDGET_1000 = 3;
+    const BUDGET_UNIT = 4;
+    const BUDGET_PIECE = 5;
     
     const ARCHIVE_NO = 0;
     const ARCHIVE_YES = 1;
+    
+    const STATUS_DRAFT = 0;
+    const STATUS_PUBLISHED = 1;
     
     public static function itemAlias($type,$code=NULL) {
         $_items = [
@@ -60,15 +65,21 @@ class Order extends \yii\db\ActiveRecord
                 self::MONEY_ELECTRONIC => 'электронные деньги'
             ],
             'BudgetType' => [
-                self::BUDGET_PROJECT => 'За проект',
-                self::BUDGET_HOUR => 'За месяц',
-                self::BUDGET_MONTH => 'За месяц',
-                self::BUDGET_1000 => 'За 1000 знаков',
+                self::BUDGET_PROJECT => 'Проект',
+                self::BUDGET_HOUR => 'Час',
+                self::BUDGET_MONTH => 'Месяц',
+                self::BUDGET_1000 => '1000 знаков',
+                self::BUDGET_UNIT => 'Единица',
+                self::BUDGET_PIECE => 'Штука'
             ],
             'Archive' => [
                 self::ARCHIVE_NO => 'Нет',
                 self::ARCHIVE_YES => 'Да'
-            ]    
+            ],
+            'Status' => [
+                self::STATUS_DRAFT => 'Черновик',
+                self::STATUS_PUBLISHED => 'Опубликован'
+            ] 
         ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
@@ -106,6 +117,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['title', 'description', 'budget', 'money'],'required'],
             [['user_id', 'status', 'is_archive', 'executor_id','view_counter', 
                 'response_counter',
                 
@@ -113,7 +125,7 @@ class Order extends \yii\db\ActiveRecord
             [['description', 'tags','money_type'], 'string'],
             [['money'], 'safe'],
             [['budget'], 'number'],
-            [['deadline'], 'safe'],
+            [['start', 'deadline'], 'safe'],
             [['title'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -181,9 +193,10 @@ class Order extends \yii\db\ActiveRecord
             'title' => 'Наименование',
             'description' => 'Описание',
             'budget' => 'Бюджет',
-            'budget_type' => 'за',
+            'budget_type' => 'Ед. изм.',
+            'start' => 'Дата начала',
             'deadline' => 'Срок исполнения',
-            'status' => 'Status',
+            'status' => 'Статус',
             'is_archive' => 'В архиве',
             'executor_id' => 'Исполнитель',
             'view_counter' => 'Просмотров',
@@ -219,8 +232,10 @@ class Order extends \yii\db\ActiveRecord
     
     public function getMoneyTypesAsArray() {
         $ret = [];
-        foreach ($this->money as $m) {
-            $ret[] = self::itemAlias('MoneyType', $m);
+        if (is_array($this->money)) {
+            foreach ($this->money as $m) {
+                $ret[] = self::itemAlias('MoneyType', $m);
+            }
         }
         return $ret;
     }

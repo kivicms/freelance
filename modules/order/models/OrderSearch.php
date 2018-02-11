@@ -43,11 +43,14 @@ class OrderSearch extends Order
     public function search($params)
     {
         $query = Order::find();
-
+        $query->andWhere('is_archive=0');
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC]
+            ]
         ]);
 
         $this->load($params);

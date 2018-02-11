@@ -5,6 +5,7 @@ use yii\widgets\ActiveForm;
 use app\modules\order\models\Order;
 use app\widgets\PanelWidget;
 use kartik\datecontrol\DateControl;
+use kartik\money\MaskMoney;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\order\models\Order */
@@ -27,7 +28,13 @@ use kartik\datecontrol\DateControl;
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-2">
-			<?= $form->field($model, 'budget')->textInput() ?>
+			<?=  
+			$form->field($model, 'budget')->widget(MaskMoney::classname(), [
+			    'pluginOptions' => [
+			        'allowNegative' => false
+			    ]
+			]);
+			?>
 		</div>
 		<div class="col-md-2">
 			<?= $form->field($model, 'budget_type')->dropDownList(Order::itemAlias('BudgetType')) ?>
@@ -40,7 +47,22 @@ use kartik\datecontrol\DateControl;
 		<div class="col-md-12">
 			<?= $form->field($model, 'description')->textarea(['rows' => 5]) ?>	
 		</div>
-		<div class="col-md-2">
+		<div class="col-md-3">
+			<?=   
+    		$form->field($model, 'start')->widget(DateControl::classname(), [
+    		    'type'=>DateControl::FORMAT_DATE,
+    		    'ajaxConversion'=>false,
+    		    'saveFormat' => 'php:Y-m-d',
+    		    'displayFormat' => 'php:d.m.Y',
+    		    'widgetOptions' => [
+    		        'pluginOptions' => [
+    		            'autoclose' => true
+    		        ]
+    		    ]
+    		]);
+    		?>
+		</div>
+		<div class="col-md-3">
 			<?=   
     		$form->field($model, 'deadline')->widget(DateControl::classname(), [
     		    'type'=>DateControl::FORMAT_DATE,
@@ -55,12 +77,12 @@ use kartik\datecontrol\DateControl;
     		]);
     		?>
 		</div>
-		<div class="col-md-1">
-			<?= $form->field($model, 'is_archive')->dropDownList(Order::itemAlias('Archive')) ?>	
+		<div class="col-md-3">
+			<?= $form->field($model, 'status')->dropDownList(Order::itemAlias('Status')) ?>	
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-12">
 			<h4>Фотографии</h4>
 			<?= \dvizh\gallery\widgets\Gallery::widget(
                 [
@@ -72,7 +94,7 @@ use kartik\datecontrol\DateControl;
             ); ?>
 		</div>
 		
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<h4>Документы</h4>
 			<?= \nemmo\attachments\components\AttachmentsInput::widget([
             	'id' => 'file-input', // Optional
@@ -97,3 +119,12 @@ use kartik\datecontrol\DateControl;
     <?php ActiveForm::end(); ?>
 
 </div>
+
+<?php 
+$this->registerCss('
+div.kv-file-content img.file-preview-image {
+    /* width: 213px; */
+    height: 160px;
+}
+')
+?>

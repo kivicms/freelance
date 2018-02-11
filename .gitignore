@@ -18,6 +18,11 @@ Thumbs.db
 # composer itself is not needed
 composer.phar
 
+/runtime
+
+/web/uploads
+/web/assets
+
 # Mac DS_Store Files
 .DS_Store
 
