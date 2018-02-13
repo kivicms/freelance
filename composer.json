@@ -29,7 +29,8 @@
 		"yii2mod/yii2-comments" : "*",
 		"kartik-v/yii2-sortable-input" : "*",
 		"kartik-v/yii2-money" : "*",
-		"2amigos/yii2-gallery-widget": "~1.0"
+		"2amigos/yii2-gallery-widget": "~1.0",
+		"kartik-v/yii2-tabs-x": "*"
 	},
 	"require-dev" : {
 		"yiisoft/yii2-debug" : "~2.0.0",

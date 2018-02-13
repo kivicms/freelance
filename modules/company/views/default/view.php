@@ -6,6 +6,7 @@ use app\widgets\CompanyProfileWidget;
 use yii\base\Widget;
 use app\widgets\PanelWidget;
 use app\widgets\orderswidget\OrdersWidget;
+use app\widgets\AboutUsWidget;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Profile */
@@ -19,6 +20,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<div class="row">
 		<div class="col-md-3">
 			<?= CompanyProfileWidget::widget(['model' => $model])  ?>
+			<?= AboutUsWidget::widget(['model' => $model]) ?>
 		</div>
 		<div class="col-md-5">
     		<?php PanelWidget::begin([

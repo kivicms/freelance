@@ -30,12 +30,12 @@ use yii\helpers\Url;
 <?php 
 $this->registerJs('
 
-setInterval(function() {
+/* setInterval(function() {
     $.get("' . Url::toRoute(['/notify/default/list-active']) . '",{}, function(data) {
         $("#notify-counter").empty().append(data.counter);
         $("#notify-menu").empty().append(data.content);
     }, "json");
-}, 10000);
+}, 10000); */
 ');
 
 ?>

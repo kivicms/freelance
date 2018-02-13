@@ -1,6 +1,7 @@
 <?php
 namespace app\modules\profile\controllers;
 
+use Yii;
 use app\modules\profile\models\Profile;
 use yii\helpers\VarDumper;
 use yii\web\NotFoundHttpException;
@@ -8,6 +9,8 @@ use app\helpers\NotifyHelper;
 use yii\helpers\Html;
 use app\modules\catalog\models\Working;
 use app\controllers\BaseController;
+use app\modules\profile\models\ProfileSearch;
+use yii\helpers\Json;
 
 class DefaultController extends BaseController {
     
@@ -53,6 +56,45 @@ class DefaultController extends BaseController {
         }
     }
     
+    public function actionIFollowing() {
+        /* $models = Profile::find()->leftJoin('follower as f', 'f.user_id = profile.user_id')->where('f.follower_id=:follower_id',[
+         ':follower_id' => \Yii::$app->user->id
+         ])->all();
+         
+         return $this->render('index',[
+         'models' => $models
+         ]); */
+        
+        $searchModel = new ProfileSearch();
+        
+        $dataProvider = $searchModel->searchIFollowing(Yii::$app->request->post());
+        
+        $html = $this->renderAjax('i-following', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+        return Json::encode($html);
+    }
+    
+    public function actionMyFollowers() {
+        /* $models = Profile::find()->leftJoin('follower as f', 'f.follower_id = profile.user_id')->where('f.user_id=:user_id',[
+         ':user_id' => \Yii::$app->user->id
+         ])->all();
+         
+         return $this->render('index',[
+         'models' => $models
+         ]); */
+        $searchModel = new ProfileSearch();
+        
+        $dataProvider = $searchModel->searchMyFollowers(Yii::$app->request->post());
+        
+        $html = $this->renderAjax('my-followers', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+        return Json::encode($html);
+    }
+    
     protected function findModel($id)
     {
         if ($id == null) {
@@ -72,4 +114,7 @@ class DefaultController extends BaseController {
     public function getShortName() {
         
     }
+    
+
+    
 }

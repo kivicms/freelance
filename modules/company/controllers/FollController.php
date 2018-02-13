@@ -36,6 +36,7 @@ class FollController extends BaseController {
         return $this->redirect(Url::previous());
     }
     
+
     
     protected function findModel($user_id) : Profile
     {
@@ -45,4 +46,6 @@ class FollController extends BaseController {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
+    
+    
 }
