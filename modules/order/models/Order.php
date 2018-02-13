@@ -56,6 +56,10 @@ class Order extends \yii\db\ActiveRecord
     
     const STATUS_DRAFT = 0;
     const STATUS_PUBLISHED = 1;
+    const STATUS_EXECUTED = 2;
+    const STATUS_SUCCESS = 3;
+    const STATUS_SUCCESS_ACCEPTED = 4;
+    const STATUS_CANCELLED = 5;
     
     public static function itemAlias($type,$code=NULL) {
         $_items = [
@@ -78,7 +82,11 @@ class Order extends \yii\db\ActiveRecord
             ],
             'Status' => [
                 self::STATUS_DRAFT => 'Черновик',
-                self::STATUS_PUBLISHED => 'Опубликован'
+                self::STATUS_PUBLISHED => 'Опубликован',
+                self::STATUS_EXECUTED => 'В работе',
+                self::STATUS_SUCCESS => 'Выполнен',
+                self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
+                self::STATUS_CANCELLED => 'Отменен'
             ] 
         ];
         if (isset($code))

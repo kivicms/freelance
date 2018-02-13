@@ -7,6 +7,7 @@ use app\modules\order\models\Order;
 use app\widgets\CompanyProfileWidget;
 use yii\base\Widget;
 use app\widgets\responseorder\ResponseOrderWidget;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\order\models\Order */
@@ -25,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 		<div class="col-md-9">
 			<?php 
 			$buttons = [];
-			if ($model->user_id == Yii::$app->user->id) {
+			if ($model->user_id == Yii::$app->user->id && $model->status < Order::STATUS_EXECUTED) {
 			    $buttons = [
 			        Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary pull-right']),
    			        Html::a('Удалить', ['delete', 'id' => $model->id], [
@@ -37,6 +38,25 @@ $this->params['breadcrumbs'][] = $this->title;
     			    ])
 			   ];
 			}
+			if ($model->executor_id == Yii::$app->user->id && $model->status == Order::STATUS_EXECUTED) {
+			    Url::remember();
+			    
+			    $buttons = [
+			        Html::a('Заказ выполнен', ['success', 'id' => $model->id], ['class' => 'btn btn-warning pull-right']),
+			    ];
+			}
+			if ($model->executor_id == Yii::$app->user->id && $model->status == Order::STATUS_SUCCESS) {
+			    $buttons = [
+			         '<span class="label label-warning pull-right">Уведомление о исполнении направлено заказчику</span>'  
+			    ];
+			}
+			if ($model->user_id == Yii::$app->user->id && $model->status == Order::STATUS_SUCCESS) {
+			    Url::remember();
+			    $buttons = [
+			        Html::a('Подтвердить выполнение заказа', ['success-accept', 'id' => $model->id], ['class' => 'btn btn-warning pull-right']),
+			    ];
+			}
+			
 			
 			?>
 		

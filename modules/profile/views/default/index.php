@@ -16,7 +16,7 @@ use app\widgets\orders\ICustomerOrderWidget;
 $this->title = 'Мой профиль';
 
 $this->params['breadcrumbs'][] = $this->title;
-
+/* @var Profile $model */
 ?>
 
 <div class="profile-index">
@@ -40,18 +40,21 @@ $this->params['breadcrumbs'][] = $this->title;
         	    'encodeLabels' => false,
         	    'items' => [
         	       [
-        	           'label' => 'Я исполнитель',
+        	           'label' => 'Я исполнитель <span class="badge bg-light-blue">' . $model->executed_orders. '</span>',
         	           'content' => IExecutorOrderWidget::widget(),
-        	           'active' => true
+        	           'active' => (! isset($_GET['tab']) || isset($_GET['tab']) && $_GET['tab'] == 'iexecutor') ? true : false
         	       ],[
-        	           'label' => 'Я заказчик',
+        	           'label' => 'Я заказчик <span class="badge bg-light-blue">' . $model->order_actual_counter. '</span>',
         	           'content' => ICustomerOrderWidget::widget(),
+        	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'icustomer') ? true : false
         	       ],[
-        	           'label' => 'Мои подписчики',
+        	           'label' => 'Мои подписчики <span class="badge bg-light-blue">' . $model->follower_counter. '</span>',
         	           'content' => MyFollowersWidget::widget(),
+        	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'myfollowers') ? true : false
         	       ],[
-        	           'label' => 'Я подписан',
+        	           'label' => 'Я подписан <span class="badge bg-light-blue">' . $model->following_counter. '</span>',
         	           'content' => IFollowingWidget::widget(),
+        	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'ifollowing') ? true : false
         	       ] 
         	   ]
         	]) ?>

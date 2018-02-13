@@ -19,22 +19,24 @@ use app\models\User;
             </div>
         </div>
 
-        <!-- search form -->
-        <!-- <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Поиск..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-        </form> -->
-        <!-- /.search form -->
 <?php 
 $items = [];
 if ( User::hasRole('company', false) && \Yii::$app->user->identity->profile->is_verified) {
     $items[] = ['label' => 'Компании', 'icon' => 'file-code-o', 'url' => ['/company/default/index']];
-    $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index']];
+    $items[] = ['label' => 'Заказы', 'icon' => 'file-code-o', 'url' => ['/order/default/index'],
+        'items' => [
+            ['label' => 'Все', 'icon' => 'file-code-o', 'url' => ['/order/default/index']],
+            ['label' => 'Я заказчик', 'badge' => \Yii::$app->user->identity->profile->order_actual_counter, 'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'icustomer']],
+            ['label' => 'Я исполнитель', 'badge' => \Yii::$app->user->identity->profile->executed_orders, 'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'iexecutor']],
+        ]
+    ];
+    
+    $items[] = ['label' => 'Друзья', 'icon' => 'file-code-o', 'url' => ['/order/default/index'],
+        'items' => [
+            ['label' => 'Я подписан', 'badge' => \Yii::$app->user->identity->profile->following_counter,  'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'ifollowing']],
+            ['label' => 'Мои подписчики', 'badge' => \Yii::$app->user->identity->profile->follower_counter, 'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'myfollowers']],
+        ]
+    ];
 
     $items[] = ['label' => 'Уведомления', 'icon' => 'file-code-o', 'url' => ['/notify/default/index']];
 }
@@ -61,51 +63,12 @@ if (User::hasRole('Admin')) {
     $items[] = ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug']];
 }
 
-/* $items[]
-$items[]
-$items[]
-$items[] */
-
-/*  = [
-    
-    ,
-    ,
-    
-    
-    ['label' => 'Login', 'url' => ['site/login'], 'visible' => Yii::$app->user->isGuest],
-    [
-        'label' => 'Some tools',
-        'icon' => 'share',
-        'url' => '#',
-        'items' => [
-            ['label' => 'Gii', 'icon' => 'file-code-o', 'url' => ['/gii'],],
-            ['label' => 'Debug', 'icon' => 'dashboard', 'url' => ['/debug'],],
-            [
-                'label' => 'Level One',
-                'icon' => 'circle-o',
-                'url' => '#',
-                'items' => [
-                    ['label' => 'Level Two', 'icon' => 'circle-o', 'url' => '#',],
-                    [
-                        'label' => 'Level Two',
-                        'icon' => 'circle-o',
-                        'url' => '#',
-                        'items' => [
-                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                            ['label' => 'Level Three', 'icon' => 'circle-o', 'url' => '#',],
-                        ],
-                    ],
-                ],
-            ],
-        ],
-    ],
-]; */
-
-
 ?>
         <?= dmstr\widgets\Menu::widget(
             [
+                'encodeLabels' => false,
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                
                 'items' => $items
             ]
         ) ?>

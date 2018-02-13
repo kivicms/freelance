@@ -13,6 +13,8 @@ use app\modules\order\models\OrderResponse;
 use app\modules\profile\models\Profile;
 use app\helpers\NotifyHelper;
 use yii\helpers\Html;
+use yii\web\HttpException;
+use yii\helpers\Url;
 
 /**
  * DefaultController implements the CRUD actions for Order model.
@@ -49,7 +51,6 @@ class DefaultController extends BaseController
     public function actionSetExecutor($id, $executor_id) {
         $model = $this->findModel($id);
         $model->executor_id = $executor_id;
-        $model->is_archive = Order::ARCHIVE_YES;
         $model->save(false,['executor_id']);
         
         $profile = Profile::find()->where('user_id=:id',[':id' => $executor_id])->one();
@@ -62,8 +63,43 @@ class DefaultController extends BaseController
             'Вы назначены исполнителем по заказу #' . Html::a($model->title, ['/order/default/view', 'id' => $model->id])
         );
         
-        \Yii::$app->session->setFlash('info', 'Исполнитель успешно назначен. Заказ перенесен в архив.');
+        \Yii::$app->session->setFlash('info', 'Исполнитель успешно назначен.');
         return $this->redirect(['view', 'id' => $model->id]);
+    }
+    
+    public function actionSuccess($id) {
+        $model = $this->findModel($id);
+        if ($model->executor_id != \Yii::$app->user->id) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        } else {
+            $model->status = Order::STATUS_SUCCESS;
+            $model->save(false,['status']);
+            NotifyHelper::send(
+                $model->user_id,
+                'Исполнитель уведомляет о исполнении заказа ' .  $model->title,
+                'Исполнитель уведомляет о исполнении заказа ' . Html::a($model->title, ['/order/default/view', 'id' => $model->id])
+            );
+            \Yii::$app->session->setFlash('info', 'Уведомление о исполнении отправлено заказчику.');
+        }
+        return $this->redirect(Url::previous());
+    }
+    
+    public function actionSuccessAccept($id) {
+        $model = $this->findModel($id);
+        if ($model->user_id != \Yii::$app->user->id) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        } else {
+            $model->status = Order::STATUS_SUCCESS_ACCEPTED;
+            $model->is_archive = Order::ARCHIVE_YES;
+            $model->save(false,['status', 'is_archive']);
+            NotifyHelper::send(
+                $model->executor_id,
+                'Заказчик подтвердил исполнении заказа ' .  $model->title,
+                'Заказчик подтвердил исполнении заказа ' . Html::a($model->title, ['/order/default/view', 'id' => $model->id])
+                );
+            \Yii::$app->session->setFlash('info', 'Уведомление о исполнении отправлено исполнителю. Заказ перемещен в архив.');
+        }
+        return $this->redirect(Url::previous());
     }
     
     public function actionMy()

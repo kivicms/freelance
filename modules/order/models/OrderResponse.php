@@ -1,5 +1,4 @@
 <?php
-
 namespace app\modules\order\models;
 
 use Yii;
@@ -13,6 +12,9 @@ use yii\behaviors\TimestampBehavior;
  * @property int $order_id Заказ
  * @property int $from_user_id От кого сообщение
  * @property string $response Текст комментария
+ * @property string $start
+ * @property string $end
+ * @oroperty double $cost Стоимость
  * @property int $created_at
  * @property int $updated_at
  * @property int $readed_time
@@ -45,7 +47,9 @@ class OrderResponse extends \yii\db\ActiveRecord
     {
         return [
             [['order_id', 'from_user_id', 'created_at', 'updated_at', 'readed_time'], 'integer'],
-            [['response'], 'required'],
+            [['start', 'end'], 'safe'],
+            [['cost'], 'number'],
+            [['response', 'cost', 'start', 'end'], 'required'],
             [['response'], 'string'],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['from_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['from_user_id' => 'id']],
@@ -62,6 +66,9 @@ class OrderResponse extends \yii\db\ActiveRecord
             'order_id' => 'Order ID',
             'from_user_id' => 'From User ID',
             'response' => 'Текст отклика',
+            'start' => 'Начало',
+            'end' => 'Окончание',
+            'cost'  => 'Стоимость',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'readed_time' => 'Readed Time',
