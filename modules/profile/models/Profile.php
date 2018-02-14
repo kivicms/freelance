@@ -144,6 +144,25 @@ class Profile extends \yii\db\ActiveRecord
     }
 
         
+    public function afterSave($insert, $changedAttributes) {
+        parent::afterSave($insert, $changedAttributes);
+        \Yii::$app->db->createCommand('
+                delete from user_working where user_id=:user_id
+            ',[
+                ':user_id' => $this->user_id
+            ])->execute();
+            
+            if (is_array($this->w_ids)) {
+                foreach ($this->w_ids as $w_id) {
+                    \Yii::$app->db->createCommand('
+                        insert into user_working (user_id, working_id) values (:user_id, :working_id)
+                    ',[
+                        ':user_id' => $this->user_id,
+                        ':working_id' => $w_id
+                    ])->execute();
+                }
+            }
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

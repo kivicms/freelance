@@ -29,7 +29,7 @@ use app\modules\catalog\models\Working;
 		<div class="col-md-12">
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-6">
 			<?php
 			echo $form->field($model, 'w_ids')->widget(
     			Select2::className(), [
@@ -44,9 +44,26 @@ use app\modules\catalog\models\Working;
     			]
 			)
 			?>
-
-			
 		</div>
+
+		<div class="col-md-6">
+			<?php
+			echo $form->field($model, 'placements')->widget(
+    			Select2::className(), [
+    			    'name' => 'kv-state-240', 
+    			    // 'data' => Working::loadItemsWithParent(),
+    			    'size' => Select2::MEDIUM,
+    			    'options' => ['placeholder' => 'Выберите местоположение ...', 'multiple' => true],
+    			    'pluginOptions' => [
+    			        'tags' => true,
+    			        'allowClear' => true
+    			    ],
+    			]
+			)
+			?>
+		</div>
+
+
 		<div class="col-md-2">
 			<?=  
 			$form->field($model, 'budget')->widget(MaskMoney::classname(), [

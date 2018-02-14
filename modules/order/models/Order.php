@@ -8,6 +8,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\helpers\Json;
 use yii\helpers\VarDumper;
 use app\modules\profile\models\Profile;
+use app\modules\catalog\models\Working;
 
 /**
  * This is the model class for table "order".
@@ -41,6 +42,7 @@ class Order extends \yii\db\ActiveRecord
     
     public $money = [];
     public $w_ids = [];
+    public $placements = [];
     
     const MONEY_CASH = 0;
     const MONEY_CACHLESS = 1;
@@ -127,13 +129,15 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'budget', 'money'],'required'],
+            [['title', 'description', 'budget', 'money', 'placements'],'required'],
             [['user_id', 'status', 'is_archive', 'executor_id','view_counter', 
                 'response_counter',
                 
                 'created_at', 'updated_at', 'created_by', 'updated_by', 'budget_type'], 'integer'],
-            [['description', 'tags','money_type'], 'string'],
+            [['description', 'tags','money_type', 'placement'], 'string'],
             [['money'], 'safe'],
+            [['w_ids'], 'safe'],
+            [['placements'], 'safe'],
             [['budget'], 'number'],
             [['start', 'deadline'], 'safe'],
             [['title'], 'string', 'max' => 255],
@@ -144,6 +148,8 @@ class Order extends \yii\db\ActiveRecord
     public function beforeSave($insert) {
         if (parent::beforeSave($insert)) {
             $this->money_type = Json::encode($this->money);
+            $this->placement = Json::encode($this->placements);
+            // echo "here!!!!!!!!!!!!!!!<br><br><br><br>";
             return true;
         }
         return false;
@@ -151,10 +157,30 @@ class Order extends \yii\db\ActiveRecord
     
     public function afterSave($insert, $changedAttributes) {
         parent::afterSave($insert, $changedAttributes);
-        
+        $this->saveWorkings();
         $this->updateOrder();
     }
-        
+    
+    private function saveWorkings() {
+        \Yii::$app->db->createCommand('
+                delete from order_working where order_id=:order_id
+            ',[
+                ':order_id' => $this->id
+            ])->execute();
+//            VarDumper::dump($this->w_ids,10,true);die;
+            if (is_array($this->w_ids)) {
+                VarDumper::dump($this->w_ids,10,true);
+                foreach ($this->w_ids as $w_id) {
+                    \Yii::$app->db->createCommand('
+                        insert into order_working (order_id, working_id) values (:order_id, :working_id)
+                    ',[
+                        ':order_id' => $this->id,
+                        ':working_id' => $w_id
+                    ])->execute();
+                }
+            }
+    }
+    
     private function updateOrder() {
         $activeOrders = \Yii::$app->db->createCommand('
             select
@@ -189,6 +215,16 @@ class Order extends \yii\db\ActiveRecord
     
     public function afterFind() {
         $this->money = Json::decode($this->money_type);
+        $this->placements = Json::decode($this->placement);
+        
+        $ids = \Yii::$app->db->createCommand('
+            select working_id from order_working where order_id=:order_id
+        ',[
+            ':order_id' => $this->id
+        ])->queryAll();
+        
+        $this->w_ids = array_column($ids, 'working_id');
+        
         return parent::afterFind();
     }
     
@@ -218,7 +254,8 @@ class Order extends \yii\db\ActiveRecord
             'created_by' => 'Автор',
             'updated_by' => 'Редактор',
             'placement' => 'Местоположение',
-            'w_ids' => 'Категории'
+            'w_ids' => 'Категории',
+            'placements' => 'Местоположения'
         ];
     }
     public function attributeHints() {
@@ -255,5 +292,18 @@ class Order extends \yii\db\ActiveRecord
             }
         }
         return $ret;
+    }
+    
+    public function getWorkingsAsTitleArray() {
+        $ret = [];
+        $wss = $this->workings;
+        foreach ($wss as $ws) {
+            $ret[] = $ws->title;
+        }
+        return $ret;
+    }
+    
+    public function getWorkings() {
+        return $this->hasMany(Working::className(), ['id' => 'working_id'])->viaTable('order_working', ['order_id' => 'id']);
     }
 }

@@ -15,6 +15,8 @@ use app\helpers\NotifyHelper;
 use yii\helpers\Html;
 use yii\web\HttpException;
 use yii\helpers\Url;
+use yii\helpers\VarDumper;
+use yii\helpers\Json;
 
 /**
  * DefaultController implements the CRUD actions for Order model.
@@ -158,13 +160,17 @@ class DefaultController extends BaseController
      */
     public function actionUpdate($id)
     {
+        
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             \Yii::$app->session->setFlash('success', 'Ваш заказ успешно обновлен!');
             return $this->redirect(['view', 'id' => $model->id]);
         }
-
+        if ($model->hasErrors()) {
+            \Yii::$app->session->setFlash('error', Json::encode($model->getErrors()));
+        }
+        // VarDumper::dump($model,19,true);die;
         return $this->render('update', [
             'model' => $model,
         ]);

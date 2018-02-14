@@ -24,22 +24,7 @@ class DefaultController extends BaseController {
         $model = $this->findModel($id);
         
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
-            \Yii::$app->db->createCommand('
-                delete from user_working where user_id=:user_id
-            ',[
-                ':user_id' => $model->user_id
-            ])->execute();
             
-            if (is_array($model->w_ids)) {
-                foreach ($model->w_ids as $w_id) {
-                    \Yii::$app->db->createCommand('
-                        insert into user_working (user_id, working_id) values (:user_id, :working_id)
-                    ',[
-                        ':user_id' => $model->user_id,
-                        ':working_id' => $w_id
-                    ])->execute();
-                }
-            }
             NotifyHelper::send(1,
                 'Пользователь ' . $model->fullCompanyName . ' изменил свои данные',
                 'Пользователь ' . Html::a($model->fullCompanyName,['/profile/index', 'id' => $model->user_id]) . ' изменил свои данные'

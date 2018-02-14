@@ -75,6 +75,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     <span><?= implode(', ', $model->moneyTypesAsArray) ?></span>                    
         		</div>
         		<div class="col-md-12">
+        			<strong>Направление бизнеса:</strong> <?= implode(', ', $model->WorkingsAsTitleArray) ?>
+        		</div>
+        		<div class="col-md-12">
+        			<strong>Местоположение:</strong> <?= is_array($model->placements) ? implode(', ', $model->placements) : '' ?>
+        		</div>
+        		<div class="col-md-12">
         			<?= Yii::$app->formatter->asDatetime($model->created_at) ?>  • 
         			<?= '2' ?> отклика  • 
         			<?= $model->view_counter ?> просмотров
