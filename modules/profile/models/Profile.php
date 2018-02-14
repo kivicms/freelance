@@ -15,6 +15,7 @@ use app\models\User;
  * @property string $lastname
  * @property string $firstname
  * @property string $middlename
+ * @property string $email
  * @property string $phone
  * @property string $www
  * @property int $type_of_legal Тип юр лица 0 - ООО, 1 ИП
@@ -94,11 +95,12 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'type_of_legal', 'is_verified', 'executed_orders', 'sex'], 'integer'],
-            [['phone', 'title', 'description', 'address_fact', 'address_legal'], 'required'],
+            [['phone', 'title', 'email'], 'required'],
             [['description', 'www', 'lastname', 'firstname', 'middlename'], 'string'],
             [['www'], 'url', 'defaultScheme' => 'http'],
             [['w_ids'], 'safe'],
             [['phone'], 'string', 'max' => 20],
+            [['email'], 'email'],
             [['title', 'address_fact', 'address_legal'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -126,6 +128,7 @@ class Profile extends \yii\db\ActiveRecord
             'lastname' => 'Фамилия',
             'firstname' => 'Имя',
             'middlename' => 'Отчество',
+            'email' => 'E-Mail',
             'sex' => 'Пол',
             'www' => 'Сайт',
             'phone' => 'Телефон',

@@ -3,9 +3,27 @@ namespace app\helpers;
 
 use app\modules\notify\models\Notify;
 use yii\helpers\VarDumper;
+use yii\web\HttpException;
 
 class NotifyHelper {
     
+    private static $templates = [
+        'UserVerified' => [
+            'title' => 'Подтверждение профиля',
+            'description' => 'Поздравляем! Ваш профиль успешно подтвержден. Теперь Вы можете пользоваться сайтом в полном объеме!'
+        ]  
+    ];
+    
+    public static function sendTemplate($to_user_id, $template) {        
+        if (isset(self::$templates[$template])) {
+            self::send($to_user_id, 
+                self::$templates[$template]['title'],
+                self::$templates[$template]['description']
+            );
+        } else {
+            throw new HttpException('Указанного шаблона ' . $template . 'не существует!');
+        }
+    }
     public static function send($to_user_id, $title, $description) {
         if (is_array($to_user_id)) {
             foreach ($to_user_id as $uid) {

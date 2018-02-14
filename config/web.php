@@ -1,7 +1,7 @@
 <?php
 use kartik\datecontrol\Module;
 use webvimark\modules\UserManagement\components\UserAuthEvent;
-use app\models\Profile;
+use app\modules\profile\models\Profile;
 use yii\helpers\VarDumper;
 use app\helpers\NotifyHelper;
 
@@ -122,6 +122,9 @@ $config = [
             
             'enableRegistration' => true,
             
+            'registrationFormClass' => 'app\models\RegistrationFormWithProfile', 
+            'rolesAfterRegistration' => ['company'],
+            
             // Add regexp validation to passwords. Default pattern does not restrict user and can enter any set of characters.
             // The example below allows user to enter :
             // any set of characters
@@ -137,22 +140,22 @@ $config = [
             // Tip: you can use this event in any module
             'on beforeAction' => function (yii\base\ActionEvent $event) {
                 if ($event->action->uniqueId == 'user-management/auth/login') {
-                    $event->action->controller->layout = 'loginLayout.php';
+                    $event->action->controller->layout = '/main-login.php';
                 }
                 if ($event->action->uniqueId == 'user-management/auth/registration') {
-                    $event->action->controller->layout = 'loginLayout.php';
+                    $event->action->controller->layout = '/main-login.php';
                 }
                 ;
             },
             'on afterRegistration' => function(UserAuthEvent $event) {                
                 //  Here you can do your own stuff like assign roles, send emails and so on
-                $p = new Profile();
+/*                 $p = new Profile();
                 $p->user_id = $event->user->id;
                 $p->save(false, ['user_id']);
                 Yii::$app->db->createCommand('insert into auth_assignment (item_name, user_id, created_at) values("company", :user_id, :time)',[
                     ':user_id' => $event->user->id,
                     ':time' => time()
-                ])->execute();    
+                ])->execute();     */
                 NotifyHelper::send(1,
                     'Зарегистрирован новый пользователь ' . $event->user->username, '');
             },

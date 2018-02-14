@@ -17,12 +17,19 @@ dmstr\web\AdminLteAsset::register($this);
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
 </head>
-<body class="login-page">
-
+<body class="hold-transition register-page">
 <?php $this->beginBody() ?>
 
-    <?= $content ?>
-
+	<div class="register-box">
+		<div class="register-logo">
+    		<a href="../../index2.html">RussiaNetwork.ru</a>
+  		</div>
+  		<div class="register-box-body">
+    		
+    		
+    		<?= $content ?>
+		</div>
+	</div>
 <?php $this->endBody() ?>
 </body>
 </html>

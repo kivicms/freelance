@@ -39,7 +39,7 @@ class SiteController extends BaseController
         }
         if (! \Yii::$app->user->identity->profile->is_verified) {
             \Yii::$app->session->setFlash('error', 'Вам необходимо заполнить свой профиль и получить подтверждение администратора!');
-            return $this->redirect(['/profile/index']);            
+            return $this->redirect(['/profile/default/update', 'id' => \Yii::$app->user->id]);            
         }
         return $this->render('index');
     }

@@ -6,6 +6,8 @@ use app\modules\order\models\Order;
 use app\widgets\PanelWidget;
 use kartik\datecontrol\DateControl;
 use kartik\money\MaskMoney;
+use kartik\widgets\Select2;
+use app\modules\catalog\models\Working;
 
 /* @var $this yii\web\View */
 /* @var $model app\modules\order\models\Order */
@@ -24,8 +26,26 @@ use kartik\money\MaskMoney;
     <?= $form->field($model, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
 
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-12">
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
+		</div>
+		<div class="col-md-8">
+			<?php
+			echo $form->field($model, 'w_ids')->widget(
+    			Select2::className(), [
+    			    'name' => 'kv-state-240', 
+    			    'data' => Working::loadItemsWithParent(),
+    			    'size' => Select2::MEDIUM,
+    			    'options' => ['placeholder' => 'Выберите категорию ...', 'multiple' => true],
+    			    'pluginOptions' => [
+    			        'tags' => true,
+    			        'allowClear' => true
+    			    ],
+    			]
+			)
+			?>
+
+			
 		</div>
 		<div class="col-md-2">
 			<?=  
@@ -39,7 +59,7 @@ use kartik\money\MaskMoney;
 		<div class="col-md-2">
 			<?= $form->field($model, 'budget_type')->dropDownList(Order::itemAlias('BudgetType')) ?>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<?= $form->field($model, 'money')->checkboxList(Order::itemAlias('MoneyType')) ?>
 		</div>
 	</div>

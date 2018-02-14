@@ -35,13 +35,16 @@ $this->params['breeadcrumbs'][] = $this->title;
 	
 	<h4>Общая информация</h4>
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-md-8">
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-4">
+			<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+		</div> 
+		<div class="col-md-6">
 			<?= $form->field($model, 'address_legal')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="col-md-4">
+		<div class="col-md-6">
 			<?= $form->field($model, 'address_fact')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-8">

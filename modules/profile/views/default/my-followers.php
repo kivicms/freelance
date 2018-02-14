@@ -7,7 +7,8 @@ use yii\helpers\Html;
 ?>
 
 <?php Pjax::begin([
-    'id' => 'my-followers'
+    'id' => 'my-followers',
+    'enablePushState' => false
 ]) ?>
 <div class="my-followers-widget">
 <?= Html::beginForm(['/profile/default/my-followers'], 'post', ['data-pjax' => '', 'class' => 'form-inline']); ?>

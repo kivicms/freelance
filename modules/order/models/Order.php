@@ -31,6 +31,7 @@ use app\modules\profile\models\Profile;
  * @property int $updated_at
  * @property int $created_by
  * @property int $updated_by
+ * @property string $placement
  *
  * @property User $user
  * @property OrderWorking[] $orderWorkings
@@ -39,6 +40,7 @@ class Order extends \yii\db\ActiveRecord
 {
     
     public $money = [];
+    public $w_ids = [];
     
     const MONEY_CASH = 0;
     const MONEY_CACHLESS = 1;
@@ -214,7 +216,14 @@ class Order extends \yii\db\ActiveRecord
             'created_at' => 'Создано',
             'updated_at' => 'Отредактировано',
             'created_by' => 'Автор',
-            'updated_by' => 'Редактор'
+            'updated_by' => 'Редактор',
+            'placement' => 'Местоположение',
+            'w_ids' => 'Категории'
+        ];
+    }
+    public function attributeHints() {
+        return [
+            'placement' => 'Через запятую'
         ];
     }
     

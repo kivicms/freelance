@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 	<?php PanelWidget::begin([
 	    'title' => $this->title
 	])?>
-	<?php Pjax::begin() ?>
+	<?php Pjax::begin(['enablePushState' => false]) ?>
 	<div class="table-responsive">
 		<table class="table table-bordered table-hover table-condensed">	
 			<thead>
@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<tbody>
 			<?php foreach ($models as $model) : ?>
 				<tr>
-					<td class="text-center"><?= $model->id ?></td>
+					<td class="text-center"><?= Html::a('Подтвердить',['/profile/admin/index', 'id' => $model->id])?></td>
 					<td class="text-center"><?= Html::a($model->title,['/profile/admin/view', 'id' => $model->id], ['target'=>'_blank']) ?></td>
 					<td class="text-center"><?= $model->fullFio ?></td>
 					<td class="text-center"><?= $model->phone ?></td>
