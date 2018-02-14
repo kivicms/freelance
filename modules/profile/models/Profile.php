@@ -46,6 +46,10 @@ class Profile extends \yii\db\ActiveRecord
                 self::LEGAL_OOO => 'Общество с ограниченной ответственностью',
                 self::LEGAL_IP => 'Индивидуальный предприниматель',
             ],
+            'ShortLegal' => [
+                self::LEGAL_OOO => 'ООО',
+                self::LEGAL_IP => 'ИП',
+            ],
             'Verified' => [
                 self::PROFILE_VERIFIED_NO => 'Профиль не проверен',
                 self::PROFILE_VERIFIED_YES => 'Профиль проверен'

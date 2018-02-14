@@ -51,6 +51,12 @@ if (User::hasRole('Admin')) {
     
     
     $items[] = ['label' => 'Пользователи', 'options' => ['class' => 'header']];
+    $items[] = [
+        'label' => 'Неподтвержденнные ', 
+        'icon' => 'file-code-o', 
+        'url' => ['/profile/admin/index'], 
+        'badge' => Yii::$app->db->createCommand('select count(*) from profile where is_verified=0')->queryScalar()        
+    ];
     $items[] = ['label' => 'Пользователи', 'icon' => 'file-code-o', 'url' => ['/user-management/user/index']];
     $items[] = ['label' => 'Роли', 'icon' => 'file-code-o', 'url' => ['/user-management/role/index']];
     $items[] = ['label' => 'Права', 'icon' => 'file-code-o', 'url' => ['/user-management/permission/index']];
