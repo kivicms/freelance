@@ -19,8 +19,8 @@ use app\modules\catalog\models\Working;
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
-	    'buttons' => [
-	        Html::submitButton('Сохранить', ['class' => 'btn btn-success pull-right'])
+	    'boxFooter' => [
+	        Html::submitButton('Сохранить', ['class' => 'btn btn-success'])
 	   ]
 	])?>
     <?= $form->field($model, 'user_id')->hiddenInput(['value' => Yii::$app->user->id])->label(false) ?>
@@ -62,8 +62,9 @@ use app\modules\catalog\models\Working;
 			)
 			?>
 		</div>
-
-
+		<div class="col-md-1">
+			<?= $form->field($model, 'valuta')->dropDownList(Order::itemAlias('Valuta'),['encode' =>false]) ?>
+		</div>
 		<div class="col-md-2">
 			<?=  
 			$form->field($model, 'budget')->widget(MaskMoney::classname(), [
@@ -115,15 +116,16 @@ use app\modules\catalog\models\Working;
     		?>
 		</div>
 		<div class="col-md-3">
-			<?= $form->field($model, 'status')->dropDownList(Order::itemAlias('Status')) ?>	
+			<?= $form->field($model, 'status')->dropDownList(Order::itemAlias('ShortStatus')) ?>	
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<h4>Фотографии</h4>
+			
 			<?= \dvizh\gallery\widgets\Gallery::widget(
                 [
                     'model' => $model,
+                    'label' => 'Фотографии',
                     'previewSize' => '115x115',
                     'fileInputPluginLoading' => true,
                     'fileInputPluginOptions' => []
@@ -146,12 +148,6 @@ use app\modules\catalog\models\Working;
 		</div>
 	</div>
 
-    <?php // $form->field($model, 'status')->textInput() ?>
-
-    
-
-    <?php // $form->field($model, 'executor_id')->textInput() ?>
-
 	<?php PanelWidget::end()?>
     <?php ActiveForm::end(); ?>
 
@@ -162,6 +158,12 @@ $this->registerCss('
 div.kv-file-content img.file-preview-image {
     /* width: 213px; */
     height: 160px;
+}
+div.file-caption {
+    display: none;
+}
+a.fileinput-upload-button, button.fileinput-upload-button {
+    display: none;
 }
 ')
 ?>

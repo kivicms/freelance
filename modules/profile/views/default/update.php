@@ -27,8 +27,7 @@ $this->params['breeadcrumbs'][] = $this->title;
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
 	    'buttons' => [
-	        Html::a('Назад', ['index'], ['class' => 'btn btn-info pull-right']),
-	        Html::submitButton('Сохранить', ['class' => 'btn btn-success pull-right'])
+	        
 	   ]
 	]) ?>
 	<?= $form->field($model, 'user_id')->hiddenInput()->label(false) ?>
@@ -125,7 +124,8 @@ $this->params['breeadcrumbs'][] = $this->title;
 		</div>	
 
 	</div>
-	
+	<?= Html::a('Назад', ['index'], ['class' => 'btn btn-info pull-right']) ?>
+	<?= Html::submitButton('Сохранить', ['class' => 'btn btn-success pull-right']) ?>
 	<?php  PanelWidget::end() ?>
     <?php ActiveForm::end(); ?>
 

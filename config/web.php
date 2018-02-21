@@ -10,7 +10,7 @@ $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic',
-    'name' => 'RUSSIAN NETWORK',
+    'name' => 'RUSSIA NETWORK',
     'language' => 'ru-RU',
     'timeZone' =>  'Europe/Moscow',
     'basePath' => dirname(__DIR__),

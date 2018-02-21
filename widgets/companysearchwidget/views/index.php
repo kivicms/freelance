@@ -11,6 +11,6 @@ use yii\helpers\Html;
 
 <?= $form->field($model, 'title')->textInput() ?>
 
-<?= Html::submitButton('Найти')?>
+<?= Html::submitButton('Найти', ['class' => 'btn btn-success'])?>
 
 <?php ActiveForm::end() ?>

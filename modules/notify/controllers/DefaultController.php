@@ -56,7 +56,7 @@ class DefaultController extends BaseController
         if ($model->status == 0) {
             $model->status = 1;
             $model->readed_time = time();
-            $model->save();
+            $model->save(false,['status', 'readed_time']);
         }
         return $this->render('view', [
             'model' => $model,

@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
         	           'linkOptions'=>['data-url'=>Url::to(['/profile/default/i-following'])],
         	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'ifollowing') ? true : false
         	       ],
-        	       [
+/*         	       [
         	           'label' => 'Я исполнитель <span class="badge bg-light-blue">' . $model->executed_orders. '</span>',
         	           'content' => IExecutorOrderWidget::widget(),
         	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'iexecutor') ? true : false
@@ -62,7 +62,7 @@ $this->params['breadcrumbs'][] = $this->title;
         	           'label' => 'Я заказчик <span class="badge bg-light-blue">' . $model->order_actual_counter. '</span>',
         	           'content' => ICustomerOrderWidget::widget(),
         	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'icustomer') ? true : false
-        	       ]
+        	       ] */
         	    
         	   ]
         	]) ?>

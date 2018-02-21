@@ -18,19 +18,23 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="order-view">
 	<div class="row">
+		<?php if ($model->profile->user_id !== Yii::$app->user->id) : ?>
 		<div class="col-md-3">
 			<?= CompanyProfileWidget::widget([
 			    'model' => $model->profile
 			]) ?>
 		</div>	
 		<div class="col-md-9">
+		<?php else : ?>
+		<div class="col-md-12">
+		<?php endif; ?>
 			<?php 
 			$buttons = [];
 			if ($model->user_id == Yii::$app->user->id && $model->status < Order::STATUS_EXECUTED) {
 			    $buttons = [
-			        Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary pull-right']),
+			        Html::a('Редактировать', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']),
    			        Html::a('Удалить', ['delete', 'id' => $model->id], [
-    			        'class' => 'btn btn-danger pull-right',
+    			        'class' => 'btn btn-danger',
     			        'data' => [
     			            'confirm' => 'Are you sure you want to delete this item?',
     			            'method' => 'post',
@@ -42,18 +46,18 @@ $this->params['breadcrumbs'][] = $this->title;
 			    Url::remember();
 			    
 			    $buttons = [
-			        Html::a('Заказ выполнен', ['success', 'id' => $model->id], ['class' => 'btn btn-warning pull-right']),
+			        Html::a('Заказ выполнен', ['success', 'id' => $model->id], ['class' => 'btn btn-warning']),
 			    ];
 			}
 			if ($model->executor_id == Yii::$app->user->id && $model->status == Order::STATUS_SUCCESS) {
 			    $buttons = [
-			         '<span class="label label-warning pull-right">Уведомление о исполнении направлено заказчику</span>'  
+			         '<span class="label label-warning">Уведомление о исполнении направлено заказчику</span>'  
 			    ];
 			}
 			if ($model->user_id == Yii::$app->user->id && $model->status == Order::STATUS_SUCCESS) {
 			    Url::remember();
 			    $buttons = [
-			        Html::a('Подтвердить выполнение заказа', ['success-accept', 'id' => $model->id], ['class' => 'btn btn-warning pull-right']),
+			        Html::a('Подтвердить выполнение заказа', ['success-accept', 'id' => $model->id], ['class' => 'btn btn-warning']),
 			    ];
 			}
 			
@@ -62,11 +66,11 @@ $this->params['breadcrumbs'][] = $this->title;
 		
         	<?php PanelWidget::begin([
         	    'title' => $this->title,
-        	    'buttons' => $buttons    
+        	    'boxFooter' => $buttons    
         	])?>
         	<div class="row">
         		<div class="col-md-12">
-        			<img class="img-circle img-bordered-sm" src="<?= $model->getImage()->getUrl('50x50') ?>" style="float: left">
+        			<img class="img-circle img-bordered-sm" src="<?= $model->getImage()->getUrl('50x50') ?>" style="float: left; margin-right: 20px">
         			<h2><?= $model->title ?></h2>
       				<span class="text-green"><strong>
       					<?= Yii::$app->formatter->asCurrency($model->budget, 'RUR') . ' ' 

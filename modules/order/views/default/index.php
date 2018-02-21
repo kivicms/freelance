@@ -5,6 +5,8 @@ use yii\grid\GridView;
 use app\widgets\PanelWidget;
 use yii\widgets\ListView;
 use yii\base\Widget;
+use app\widgets\orders\OrderButtonsWidget;
+use app\widgets\orders\OrderSearchWidget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\modules\order\models\OrderSearch */
@@ -21,7 +23,15 @@ $this->params['breadcrumbs'][] = $this->title;
             Html::a('Добавить заказ', ['create'], ['class' => 'btn btn-success'])
         ]
     ])?>
-    
+    <div class="row">
+    	<div class="col-md-6">
+    		<?= OrderButtonsWidget::widget(['active' => 'index']) ?>	
+    	</div>
+    	<div class="col-md-6 pull-right" >
+    		<?= OrderSearchWidget::widget(['model' => $searchModel, 'status' => false]) ?>	
+    	</div>
+    </div>
+	<hr>
     <?= ListView::widget([
         'dataProvider' => $dataProvider,
         'itemView' => '_list',

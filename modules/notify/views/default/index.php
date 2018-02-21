@@ -8,7 +8,7 @@ use app\widgets\PanelWidget;
 /* @var $searchModel app\modules\notify\models\NotifySearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Уведомления системы';
+$this->title = 'Уведомления';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="notify-index">
@@ -32,11 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
                 }
             ],
             'description:html',
+            [
+                'attribute' => 'created_at',
+                'value' => function($model) {
+                    return Yii::$app->formatter->asDatetime($model->created_at);
+                }
+            ],
             
-            'created_at:datetime',
             //'updated_at',
             //'status',
-            [
+/*             [
                 'attribute' => 'readed_time',
                 'value' => function($model) {
                     if (! $model->status) {
@@ -45,12 +50,12 @@ $this->params['breadcrumbs'][] = $this->title;
                         return Yii::$app->formatter->asDatetime($model->readed_time);
                     }
                 }
-            ],
+            ], */
 
-            [
+            /* [
                 'class' => 'yii\grid\ActionColumn',
                 'template' => '{view}'
-            ],
+            ], */
         ],
     ]); ?>
 <?php PanelWidget::end() ?>

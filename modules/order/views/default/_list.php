@@ -11,7 +11,7 @@ use yii\helpers\Url;
 			<img src="<?= $model->profile->getImage()->getUrl('70x70') ?>" class="img-circle" alt=""/>
 		</div>
     	<div class="col-md-8">
-    		<h2><a href="<?= Url::toRoute(['/order/default/view', 'id' => $model->id]) ?>"><?= $model->title ?></a></h2>
+    		<h3><a href="<?= Url::toRoute(['/order/default/view', 'id' => $model->id]) ?>"><?= $model->title ?></a></h3>
     	</div>
     	<div class="col-md-3">
     		<h4>

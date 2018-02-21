@@ -20,6 +20,7 @@ class PanelWidget extends Widget
     public $template = [];
 
     private $_buttons = [];
+    public $boxFooter = [];
 
     public function init()
     {
@@ -30,7 +31,7 @@ class PanelWidget extends Widget
                 <div class="box-header with-border">
                     <h3 class="box-title">' . $this->title . '</h3>';
         if (count($this->buttons)) {
-            echo '<div class="box-tools pull-right">';
+            echo '<div class="box-tools">';
             foreach ($this->buttons as $button) {
                 echo $button;
             }
@@ -42,6 +43,14 @@ class PanelWidget extends Widget
 
     public function run()
     {
-        echo '</div></div>';
+        echo '</div>';
+        if (count($this->boxFooter) > 0) {
+            echo '<div class="box-footer">';
+            foreach ($this->boxFooter as $bf) {
+                echo $bf;
+            }
+            echo '</div>';
+        }
+        echo '</div>';
     }
 }

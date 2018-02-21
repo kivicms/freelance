@@ -61,6 +61,19 @@ use yii\helpers\Url;
 			]);
 			?>
     	</div>
+    	<div class="col-md-12">
+			<h5>Портфолио</h5>
+			<?= \nemmo\attachments\components\AttachmentsInput::widget([
+            	'id' => 'file-input', // Optional
+			    'model' => $response,
+            	'options' => [ // Options of the Kartik's FileInput widget
+            		'multiple' => true, // If you want to allow multiple upload, default to false
+            	],
+            	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
+            		'maxFileCount' => 10 // Client max files
+            	]
+            ]) ?>
+		</div>
     </div>
     <div class="row">
     	<div class="col-md-12">
@@ -72,19 +85,23 @@ use yii\helpers\Url;
     <?php ActiveForm::end() ?>
 
 <?php else :?>
-
 	<div class="row">
 		<div class="col-md-12">
 			<div class="user-block">
-                <img class="img-circle" src="<?= $order->profile->getImage()->getUrl('128x128') ?>" alt="<?= $order->profile->getFullCompanyName() ?>">
-                <span class="username"><a href="<?= Url::toRoute(['/company/default/view', 'id' => $order->profile->id]) ?>"><?= $order->profile->getFullCompanyName() ?></a></span>
+                <img class="img-circle" src="<?= $model->fromProfile->getImage()->getUrl('128x128') ?>" alt="<?= $model->fromProfile->getFullCompanyName() ?>">
+                <span class="username"><a href="<?= Url::toRoute(['/company/default/view', 'id' => $model->fromProfile->id]) ?>"><?= $model->fromProfile->getFullCompanyName() ?></a></span>
                 <span class="label label-success pull-right">Стоимость: <?= Yii::$app->formatter->asCurrency($model->cost) ?></span>
                 <span class="description"><strong>Срок исполнения: с <?= Yii::$app->formatter->asDate($model->start) ?> по <?= Yii::$app->formatter->asDate($model->end) ?></strong><br>
 					<?= $model->response ?>
                 </span>
-                
         	</div>
 		</div>
+		<?php if (count($model->files) > 0) : ?>
+			<div class="col-md-12">
+				<h5>Портфолио</h5>
+					<?= \nemmo\attachments\components\AttachmentsTable::widget(['model' => $model]) ?>
+			</div>
+		<?php endif; ?>
 		<div class="col-md-12">
 			<div class="comments-inner-widget  bg-aqua color-palette disabled">
 			<?= \yii2mod\comments\widgets\Comment::widget([
@@ -96,9 +113,23 @@ use yii\helpers\Url;
 <?php endif; ?>
 <?php PanelWidget::end() ?>
 </div>
-<style>
+
+<?php 
+$this->registerCss('
 .comments-inner-widget {
 	margin: 20px 0px;
 	padding: 5px 10px;
 }
-</style>
+
+div.kv-file-content img.file-preview-image {
+    /* width: 213px; */
+    height: 160px;
+}
+div.file-caption {
+    display: none;
+}
+a.fileinput-upload-button, button.fileinput-upload-button {
+    display: none;
+}
+')
+?>

@@ -8,7 +8,7 @@ class CompanyProfileWidget extends Widget {
     
     public function run() {
         return $this->render('company-profile-widget', [
-            'model' => $this->model            
+            'model' => $this->model,            
         ]);
     }
 }

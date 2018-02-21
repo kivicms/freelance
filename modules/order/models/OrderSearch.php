@@ -6,6 +6,7 @@ use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use app\modules\order\models\Order;
+use yii\helpers\VarDumper;
 
 /**
  * OrderSearch represents the model behind the search form of `app\modules\order\models\Order`.
@@ -19,7 +20,8 @@ class OrderSearch extends Order
     {
         return [
             [['id', 'user_id', 'status', 'is_archive', 'executor_id'], 'integer'],
-            [['title', 'description', 'deadline'], 'safe'],
+            [['title'], 'string'],
+            [['description', 'deadline'], 'safe'],
             [['budget'], 'number'],
         ];
     }
@@ -60,7 +62,7 @@ class OrderSearch extends Order
             // $query->where('0=1');
             return $dataProvider;
         }
-
+//VarDumper::dump($params,10,true);die;
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
@@ -75,6 +77,78 @@ class OrderSearch extends Order
         $query->andFilterWhere(['like', 'title', $this->title])
             ->andFilterWhere(['like', 'description', $this->description]);
 
+        return $dataProvider;
+    }
+    
+    public function searchIExecutor($params)
+    {
+        $query = Order::find();
+//        $query->andWhere('is_archive=0');
+        $query->andWhere('executor_id=' . \Yii::$app->user->id);
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC]
+            ]
+        ]);
+        
+        $this->load($params);
+        
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        //VarDumper::dump($params,10,true);die;
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'budget' => $this->budget,
+            'deadline' => $this->deadline,
+            'status' => $this->status,
+            'is_archive' => $this->is_archive,
+        ]);
+        
+        $query->andFilterWhere(['like', 'title', $this->title])
+        ->andFilterWhere(['like', 'description', $this->description]);
+        
+        return $dataProvider;
+    }
+    
+    public function searchICustomer($params)
+    {
+        $query = Order::find();
+//        $query->andWhere('is_archive=0');
+        $query->andWhere('user_id=' . \Yii::$app->user->id);
+        
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'sort' => [
+                'defaultOrder' => ['created_at' => SORT_DESC]
+            ]
+        ]);
+        
+        $this->load($params);
+        
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+        //VarDumper::dump($params,10,true);die;
+        // grid filtering conditions
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'budget' => $this->budget,
+            'deadline' => $this->deadline,
+            'status' => $this->status,
+            'is_archive' => $this->is_archive,
+        ]);
+        
+        $query->andFilterWhere(['like', 'title', $this->title])
+        ->andFilterWhere(['like', 'description', $this->description]);
+        
         return $dataProvider;
     }
     

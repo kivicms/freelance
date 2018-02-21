@@ -7,11 +7,11 @@ use yii\helpers\Html;
 
 <div class="box box-primary">
 	<div class="box-body box-profile">
+		<a href="<?= Url::toRoute(['/company/default/view', 'id' => $model->id]) ?>">	
+			<img src="<?= $model->getImage()->getUrl('128x128') ?>" class="profile-user-img img-responsive img-circle" alt="<?= $model->title ?>"/>
 
-		<img src="<?= $model->getImage()->getUrl('128x128') ?>" class="profile-user-img img-responsive img-circle" alt="<?= $model->title ?>"/>
-
-		<h3 class="profile-username text-center"><?= $model->fullFio ?></h3>
-
+			<h3 class="profile-username text-center"><?= $model->fullFio ?></h3>
+		</a>
 		<p class="text-muted text-center"><?= $model->fullCompanyName ?></p>
 
 		<p class="text-muted text-center"><?= implode(' • ', $model->workingsAsTitleArray)?></p>

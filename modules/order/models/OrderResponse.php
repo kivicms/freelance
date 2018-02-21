@@ -4,6 +4,7 @@ namespace app\modules\order\models;
 use Yii;
 use app\models\User;
 use yii\behaviors\TimestampBehavior;
+use app\modules\profile\models\Profile;
 
 /**
  * This is the model class for table "order_response".
@@ -28,7 +29,10 @@ class OrderResponse extends \yii\db\ActiveRecord
     
     public function behaviors() {
         return [
-            TimestampBehavior::className()  
+            TimestampBehavior::className(),
+            'fileBehavior' => [
+                'class' => \nemmo\attachments\behaviors\FileBehavior::className()
+            ]
         ];
     }
     
@@ -75,6 +79,9 @@ class OrderResponse extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getFromProfile() {
+        return $this->hasOne(Profile::className(), ['user_id' => 'from_user_id']);
+    }
     /**
      * @return \yii\db\ActiveQuery
      */

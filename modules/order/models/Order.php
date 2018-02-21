@@ -18,6 +18,7 @@ use app\modules\catalog\models\Working;
  * @property string $title
  * @property string $description
  * @property double $budget
+ * @property int $valuta
  * @property int $budget_type
  * @property string $start
  * @property string $deadline
@@ -65,8 +66,21 @@ class Order extends \yii\db\ActiveRecord
     const STATUS_SUCCESS_ACCEPTED = 4;
     const STATUS_CANCELLED = 5;
     
+    const VALUTA_RUB = 0;
+    const VALUTA_USD = 1;
+    const VALUTA_EUR = 2;
+    const VALUTA_GBP = 3;
+    const VALUTA_BTC = 4;
+    
     public static function itemAlias($type,$code=NULL) {
         $_items = [
+            'Valuta' => [
+                self::VALUTA_RUB => 'RUR',
+                self::VALUTA_USD => '$',
+                self::VALUTA_EUR => '&euro;',
+                self::VALUTA_GBP => '&#163;',
+                self::VALUTA_BTC => 'BTC',
+            ],
             'MoneyType' => [
                 self::MONEY_CASH => 'наличный расчет',
                 self::MONEY_CACHLESS => 'безналичный расчет',
@@ -91,7 +105,33 @@ class Order extends \yii\db\ActiveRecord
                 self::STATUS_SUCCESS => 'Выполнен',
                 self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
                 self::STATUS_CANCELLED => 'Отменен'
-            ] 
+            ],
+            'ShortStatus' => [
+                self::STATUS_DRAFT => 'Черновик',
+                self::STATUS_PUBLISHED => 'Опубликован',
+            ],
+            'SearchStatus' => [
+                self::STATUS_PUBLISHED => 'Опубликован',
+                self::STATUS_EXECUTED => 'В работе',
+                self::STATUS_SUCCESS => 'Выполнен',
+                self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
+                self::STATUS_CANCELLED => 'Отменен'
+            ],
+            'SearchStatusExecutor' => [
+                self::STATUS_EXECUTED => 'В работе',
+                self::STATUS_SUCCESS => 'Выполнен',
+                self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
+                self::STATUS_CANCELLED => 'Отменен'
+            ],
+            'SearchStatusCustomer' => [
+                self::STATUS_DRAFT=> 'Черновик',
+                self::STATUS_PUBLISHED => 'Опубликован',
+                self::STATUS_EXECUTED => 'В работе',
+                self::STATUS_SUCCESS => 'Выполнен',
+                self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
+                self::STATUS_CANCELLED => 'Отменен'
+            ],
+            
         ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
@@ -129,11 +169,11 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'budget', 'money', 'placements'],'required'],
+            [['title', 'description', 'budget', 'valuta', 'money', 'placements'],'required'],
             [['user_id', 'status', 'is_archive', 'executor_id','view_counter', 
                 'response_counter',
                 
-                'created_at', 'updated_at', 'created_by', 'updated_by', 'budget_type'], 'integer'],
+                'created_at', 'updated_at', 'created_by', 'updated_by', 'valuta', 'budget_type'], 'integer'],
             [['description', 'tags','money_type', 'placement'], 'string'],
             [['money'], 'safe'],
             [['w_ids'], 'safe'],
@@ -239,6 +279,7 @@ class Order extends \yii\db\ActiveRecord
             'title' => 'Наименование',
             'description' => 'Описание',
             'budget' => 'Бюджет',
+            'valuta' => 'Валюта',
             'budget_type' => 'Ед. изм.',
             'start' => 'Дата начала',
             'deadline' => 'Срок исполнения',

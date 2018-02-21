@@ -31,13 +31,36 @@ class DefaultController extends BaseController
     public function actionIndex()
     {
         $searchModel = new OrderSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->post());
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
+    
+    public function actionICustomer()
+    {
+        $searchModel = new OrderSearch();
+        $dataProvider = $searchModel->searchICustomer(Yii::$app->request->post());
+        
+        return $this->render('i-customer', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    public function actionIExecutor()
+    {
+        $searchModel = new OrderSearch();
+        $dataProvider = $searchModel->searchIExecutor(Yii::$app->request->post());
+        
+        return $this->render('i-executor', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+    
     
     public function actionResponse() {
         $model = new OrderResponse();
