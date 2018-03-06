@@ -11,6 +11,8 @@ use app\modules\catalog\models\Working;
 use app\controllers\BaseController;
 use app\modules\profile\models\ProfileSearch;
 use yii\helpers\Json;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 class DefaultController extends BaseController {
     
@@ -78,6 +80,24 @@ class DefaultController extends BaseController {
             'dataProvider' => $dataProvider,
         ]);
         return Json::encode($html);
+    }
+    
+    
+    public function actionValidate($id) {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            
+            $model = $this->findModel($id);
+            
+            if ($model->load(Yii::$app->request->post())) {
+                if ($errors = ActiveForm::validate($model)) {
+                    
+                    return $errors;
+                } else {
+                    return true;
+                }
+            }
+        }
     }
     
     protected function findModel($id)

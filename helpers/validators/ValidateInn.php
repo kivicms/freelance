@@ -1,6 +1,6 @@
 <?php
 // INN validator (10-digit for legals, 12-digits for person)
-//  in rules()   [['inn'], 'app\components\validators\validateInn'],
+//  in rules()   [['inn'], 'app\helpers\validators\validateInn'],
 // for test purpose use fake INN number 1234567894 or 123456789110
 namespace app\helpers\validators;
 
@@ -12,7 +12,7 @@ class ValidateInn extends Validator
         $inn = $model->$attribute;
         $len = strlen($inn);
         if (($len !== 12) && ($len !== 10)) {
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect INN length'));
+            $this->addError($model, $attribute, 'Неверная длина ИНН');
         }
         
         if ($len === 10 && ($inn[9] !== (string) (((
@@ -20,7 +20,7 @@ class ValidateInn extends Validator
                 3*$inn[3] + 5*$inn[4] +  9*$inn[5] + 
                 4*$inn[6] + 6*$inn[7] +  8*$inn[8]
                 ) % 11) % 10))) { 
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect INN checksum'));
+            $this->addError($model, $attribute, 'Неверная контрольная сумма ИНН');
             
         } elseif ($len === 12 && (($inn[10] !== (string) (((
                 7*$inn[0] + 2*$inn[1] + 4*$inn[2] +
@@ -33,7 +33,7 @@ class ValidateInn extends Validator
                 5*$inn[6] +  9*$inn[7] + 4*$inn[8] +
                 6*$inn[9] +  8*$inn[10]
                 ) % 11) % 10))))) {            
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect INN checksum'));
+            $this->addError($model, $attribute, 'Неверная контрольная сумма ИНН');
         }
     }
 }

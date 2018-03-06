@@ -19,6 +19,11 @@ use app\models\User;
  * @property string $phone
  * @property string $www
  * @property int $type_of_legal Тип юр лица 0 - ООО, 1 ИП
+ * @property string $inn
+ * @property string $kpp
+ * @property string $ogrn
+ * @property string $ogrnip
+ * @property string $position
  * @property string $title Наименование
  * @property string $description Описание
  * @property string $address_fact Фактический адрес
@@ -95,14 +100,35 @@ class Profile extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'type_of_legal', 'is_verified', 'executed_orders', 'sex'], 'integer'],
-            [['phone', 'title', 'email'], 'required'],
+            [['phone', 'title', 'email', 'inn', 'position'], 'required'],            
             [['description', 'www', 'lastname', 'firstname', 'middlename'], 'string'],
             [['www'], 'url', 'defaultScheme' => 'http'],
             [['w_ids'], 'safe'],
             [['phone'], 'string', 'max' => 20],
+            [['position'], 'string', 'max' => 30],
             [['email'], 'email'],
             [['title', 'address_fact', 'address_legal'], 'string', 'max' => 255],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [['inn'], 'app\helpers\validators\ValidateInn'],
+            
+            [['kpp'], 'app\helpers\validators\ValidateKpp'],
+            [['kpp'], 'required', 'when' => function($model) {
+                    return ($model->type_of_legal == 0);
+                }
+            ],
+            
+            [['ogrn'], 'app\helpers\validators\ValidateOgrn'],
+            [['ogrn'], 'required', 'when' => function($model) {
+                return ($model->type_of_legal == 0);
+            }
+            ],
+            
+            [['ogrnip'], 'app\helpers\validators\ValidateOgrn'],
+            [['ogrnip'], 'required', 'when' => function($model) {                
+                    return ($model->type_of_legal == 1);
+                }
+            ],
+            
         ];
     }
     
@@ -133,6 +159,11 @@ class Profile extends \yii\db\ActiveRecord
             'www' => 'Сайт',
             'phone' => 'Телефон',
             'type_of_legal' => 'Тип ',
+            'inn' => 'ИНН',
+            'kpp' => 'КПП',
+            'ogrn' => 'ОГРН',
+            'ogrnip' => 'ОГРНИП',
+            'position' => 'Должность',
             'title' => 'Наименование',
             'description' => 'Описание',
             'address_fact' => 'Фактический адрес',

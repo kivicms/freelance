@@ -17,6 +17,7 @@
  * NOTE: this file must be saved in UTF-8 encoding.
  */
 return [
+    'Incorrect KPP length' => 'Неверная длина КПП',
     'Incorrect INN checksum' => 'Неверная контрольная сумма ИНН',
     'Incorrect INN length' => 'Неверная длина ИНН',
     'Incorrect OGRN checksum' => 'Неверная контрольная сумма ОГРН/ОРГНИП',

@@ -1,6 +1,6 @@
 <?php
 // OGRN | OGRNIP validator (13-digit for OGRN, 15-digit for OGRNIP)
-//  in rules()   [['ogrn'], 'app\components\validators\validateOgrn'],
+//  in rules()   [['ogrn'], 'app\helpers\validators\ValidateOgrn'],
 // for test purpose use fake OGRN \ OGRNIP number 1111111111110 | 311111111111115
 namespace app\helpers\validators;
 
@@ -12,17 +12,17 @@ class ValidateOgrn extends Validator
     {
         $ogrn = $this->parseOgrn($model->$attribute);
         if ($ogrn['length'] !== 13 && $ogrn['length'] !== 15) {
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect OGRN length'));
+            $this->addError($model, $attribute, 'Неверная длина ОГРН/ОГРНИП');
         }
         if ($ogrn['length'] === 13 && !in_array($ogrn['attrFlag'], ['1', '2', '3', '5']) ||
             $ogrn['length'] === 15 && !in_array($ogrn['attrFlag'], ['3', '4'])) {
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect OGRN registration attribution flag'));
+                $this->addError($model, $attribute, 'Неверный признак отнесения ОГРН/ОГРНИП');
         }
         if ($ogrn['year'] < 2 || $ogrn['year'] > date('y')){
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect OGRN registration year'));
+            $this->addError($model, $attribute, 'Неверный год регистрации ОГРН/ОГРНИП');
         }
         if ($ogrn['checksum'] !== $ogrn['realChecksum']){
-            $this->addError($model, $attribute, \Yii::t('validate', 'Incorrect OGRN checksum'));
+            $this->addError($model, $attribute, 'Неверная контрольная сумма ОГРН/ОРГНИП');
         }
     }
     

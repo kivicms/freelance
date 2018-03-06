@@ -16,6 +16,7 @@ use kartik\sortinput\SortableInput;
 use kartik\widgets\Select2;
 use app\modules\catalog\models\Working;
 use yii\helpers\VarDumper;
+use yii\helpers\Url;
 
 $this->title = 'Редактирование профиля';
 $this->params['breeadcrumbs'][] = $this->title;
@@ -23,7 +24,16 @@ $this->params['breeadcrumbs'][] = $this->title;
 <?= Alert::widget()?>
 <div class="profile-update">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'action' => ['/profile/default/update', 'id' => $model->id],
+        'options' => ['enctype' => 'multipart/form-data'],
+        'enableClientValidation' => false,
+        'enableAjaxValidation' => true,
+        'validationUrl' => [
+            '/profile/default/validate', 'id' => $model->id
+        ]
+        
+    ]); ?>
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
 	    'buttons' => [
@@ -34,19 +44,24 @@ $this->params['breeadcrumbs'][] = $this->title;
 	
 	<h4>Общая информация</h4>
 	<div class="row">
-		<div class="col-md-8">
+		<div class="col-md-5">
 			<?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-4">
 			<?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 		</div> 
+		<div class="col-md-3">
+			<?= $form->field($model, 'position')->textInput(['maxlength' => true]) ?>
+		</div>
+	</div>
+	<div class="row">	
 		<div class="col-md-6">
 			<?= $form->field($model, 'address_legal')->textInput(['maxlength' => true]) ?>
 		</div>
 		<div class="col-md-6">
 			<?= $form->field($model, 'address_fact')->textInput(['maxlength' => true]) ?>
 		</div>
-		<div class="col-md-8">
+		<div class="col-md-12">
 			<?php
 			echo $form->field($model, 'w_ids')->widget(
     			Select2::className(), [
@@ -64,9 +79,28 @@ $this->params['breeadcrumbs'][] = $this->title;
 
 			
 		</div>
+	</div>
+	<div class="row">
 		<div class="col-md-2">
 			<?= $form->field($model, 'type_of_legal')->dropDownList([0 => 'ООО', 1 => 'ИП']) ?>	
 		</div>
+		
+		<div class="col-md-2">
+			<?= $form->field($model, 'inn')->textInput() ?>	
+		</div>
+		
+		<div class="col-md-2" id="kpp-field">
+			<?= $form->field($model, 'kpp')->textInput() ?>	
+		</div>
+		
+		<div class="col-md-2" id="ogrn-field">
+			<?= $form->field($model, 'ogrn')->textInput() ?>	
+		</div>
+		
+		<div class="col-md-2" id="ogrnip-field" style="display: none">
+			<?= $form->field($model, 'ogrnip')->textInput() ?>	
+		</div>
+		
 		<div class="col-md-2">
 			<?= $form->field($model, 'www')->textInput(['maxlength' => true]) ?>
 		</div>
@@ -144,3 +178,20 @@ $this->params['breeadcrumbs'][] = $this->title;
     		    ]
     		]);*/
     		?>
+    		
+<?php 
+$this->registerJs('
+$("#profile-type_of_legal").change(function() {
+    var id = $("#profile-type_of_legal option:selected").val();
+    if (id == 1) {
+        $("#kpp-field").hide();
+        $("#ogrn-field").hide();
+        $("#ogrnip-field").show();
+    } else {
+        $("#kpp-field").show();
+        $("#ogrn-field").show();
+        $("#ogrnip-field").hide();
+    }
+});
+');
+
