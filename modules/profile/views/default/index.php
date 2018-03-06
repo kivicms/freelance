@@ -38,6 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
         	
         	<?= TabsX::widget([
         	    'encodeLabels' => false,
+        	    'enableStickyTabs'=>true,
         	    'items' => [
             	    [
             	        'label' => 'О нас',
@@ -45,6 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             	        'active' => (! isset($_GET['tab']) || (isset($_GET['tab']) && $_GET['tab'] == 'aboutus')) ? true : false
             	    ],
         	       [
+        	           'id' => 'my-followers',
         	           'label' => 'Мои подписчики <span class="badge bg-light-blue">' . $model->follower_counter. '</span>',
         	           'linkOptions'=>['data-url'=>Url::to(['/profile/default/my-followers'])],
         	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'myfollowers') ? true : false
@@ -54,16 +56,6 @@ $this->params['breadcrumbs'][] = $this->title;
         	           'linkOptions'=>['data-url'=>Url::to(['/profile/default/i-following'])],
         	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'ifollowing') ? true : false
         	       ],
-/*         	       [
-        	           'label' => 'Я исполнитель <span class="badge bg-light-blue">' . $model->executed_orders. '</span>',
-        	           'content' => IExecutorOrderWidget::widget(),
-        	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'iexecutor') ? true : false
-        	       ],[
-        	           'label' => 'Я заказчик <span class="badge bg-light-blue">' . $model->order_actual_counter. '</span>',
-        	           'content' => ICustomerOrderWidget::widget(),
-        	           'active' => (isset($_GET['tab']) && $_GET['tab'] == 'icustomer') ? true : false
-        	       ] */
-        	    
         	   ]
         	]) ?>
         	

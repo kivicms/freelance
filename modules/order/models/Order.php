@@ -6,9 +6,12 @@ use app\models\User;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\helpers\Json;
-use yii\helpers\VarDumper;
 use app\modules\profile\models\Profile;
 use app\modules\catalog\models\Working;
+use yii\web\Linkable;
+use yii\web\Link;
+use yii\helpers\Url;
+use himiklab\yii2\search\behaviors\SearchBehavior;
 
 /**
  * This is the model class for table "order".
@@ -38,48 +41,68 @@ use app\modules\catalog\models\Working;
  * @property User $user
  * @property OrderWorking[] $orderWorkings
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends \yii\db\ActiveRecord implements Linkable
 {
-    
+
     public $money = [];
+
     public $w_ids = [];
+
     public $placements = [];
-    
+
     const MONEY_CASH = 0;
+
     const MONEY_CACHLESS = 1;
+
     const MONEY_ELECTRONIC = 2;
-    
+
     const BUDGET_PROJECT = 0;
+
     const BUDGET_HOUR = 1;
+
     const BUDGET_MONTH = 2;
+
     const BUDGET_1000 = 3;
+
     const BUDGET_UNIT = 4;
+
     const BUDGET_PIECE = 5;
-    
+
     const ARCHIVE_NO = 0;
+
     const ARCHIVE_YES = 1;
-    
+
     const STATUS_DRAFT = 0;
+
     const STATUS_PUBLISHED = 1;
+
     const STATUS_EXECUTED = 2;
+
     const STATUS_SUCCESS = 3;
+
     const STATUS_SUCCESS_ACCEPTED = 4;
+
     const STATUS_CANCELLED = 5;
-    
+
     const VALUTA_RUB = 0;
+
     const VALUTA_USD = 1;
+
     const VALUTA_EUR = 2;
+
     const VALUTA_GBP = 3;
+
     const VALUTA_BTC = 4;
-    
-    public static function itemAlias($type,$code=NULL) {
+
+    public static function itemAlias($type, $code = NULL)
+    {
         $_items = [
             'Valuta' => [
                 self::VALUTA_RUB => 'RUR',
                 self::VALUTA_USD => '$',
                 self::VALUTA_EUR => '&euro;',
                 self::VALUTA_GBP => '&#163;',
-                self::VALUTA_BTC => 'BTC',
+                self::VALUTA_BTC => 'BTC'
             ],
             'MoneyType' => [
                 self::MONEY_CASH => 'наличный расчет',
@@ -108,7 +131,7 @@ class Order extends \yii\db\ActiveRecord
             ],
             'ShortStatus' => [
                 self::STATUS_DRAFT => 'Черновик',
-                self::STATUS_PUBLISHED => 'Опубликован',
+                self::STATUS_PUBLISHED => 'Опубликован'
             ],
             'SearchStatus' => [
                 self::STATUS_PUBLISHED => 'Опубликован',
@@ -124,22 +147,33 @@ class Order extends \yii\db\ActiveRecord
                 self::STATUS_CANCELLED => 'Отменен'
             ],
             'SearchStatusCustomer' => [
-                self::STATUS_DRAFT=> 'Черновик',
+                self::STATUS_DRAFT => 'Черновик',
                 self::STATUS_PUBLISHED => 'Опубликован',
                 self::STATUS_EXECUTED => 'В работе',
                 self::STATUS_SUCCESS => 'Выполнен',
                 self::STATUS_SUCCESS_ACCEPTED => 'Выполнение подтверждено',
                 self::STATUS_CANCELLED => 'Отменен'
-            ],
-            
+            ]
+        
         ];
         if (isset($code))
             return isset($_items[$type][$code]) ? $_items[$type][$code] : false;
-            else
-                return isset($_items[$type]) ? $_items[$type] : false;
+        else
+            return isset($_items[$type]) ? $_items[$type] : false;
     }
-    
-    public function behaviors() {
+
+    public function getLinks()
+    {
+        return [
+            Link::REL_SELF => Url::to([
+                'api/order/view',
+                'id' => $this->id
+            ], true)
+        ];
+    }
+
+    public function behaviors()
+    {
         return [
             TimestampBehavior::className(),
             BlameableBehavior::className(),
@@ -151,12 +185,45 @@ class Order extends \yii\db\ActiveRecord
             ],
             'fileBehavior' => [
                 'class' => \nemmo\attachments\behaviors\FileBehavior::className()
+            ],
+            'search' => [
+                'class' => SearchBehavior::className(),
+                'searchScope' => function ($model) {
+                    /** @var \yii\db\ActiveQuery $model */
+                    $model->select([
+                        'title',
+                        'description',
+                        'id'
+                    ]);
+                    // $model->andWhere(['indexed' => true]);
+                },
+                'searchFields' => function ($model) {
+                    /** @var self $model */
+                    return [
+                        [
+                            'name' => 'title',
+                            'value' => $model->title
+                        ],
+                        [
+                            'name' => 'description',
+                            'value' => strip_tags($model->description)
+                        ],
+                        [
+                            'name' => 'url',
+                            'value' => '/order/default/view' . $model->id,
+                            'type' => SearchBehavior::FIELD_KEYWORD
+                        ]
+                        // ['name' => 'model', 'value' => 'page', 'type' => SearchBehavior::FIELD_UNSTORED],
+                    ];
+                }
             ]
         ];
     }
-    
+
     /**
+     *
      * {@inheritdoc}
+     *
      */
     public static function tableName()
     {
@@ -164,28 +231,105 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
+     *
      * {@inheritdoc}
+     *
      */
     public function rules()
     {
         return [
-            [['title', 'description', 'budget', 'valuta', 'money', 'placements'],'required'],
-            [['user_id', 'status', 'is_archive', 'executor_id','view_counter', 
-                'response_counter',
-                
-                'created_at', 'updated_at', 'created_by', 'updated_by', 'valuta', 'budget_type'], 'integer'],
-            [['description', 'tags','money_type', 'placement'], 'string'],
-            [['money'], 'safe'],
-            [['w_ids'], 'safe'],
-            [['placements'], 'safe'],
-            [['budget'], 'number'],
-            [['start', 'deadline'], 'safe'],
-            [['title'], 'string', 'max' => 255],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
+            [
+                [
+                    'title',
+                    'description',
+                    'budget',
+                    'valuta',
+                    'money',
+                    'placements'
+                ],
+                'required'
+            ],
+            [
+                [
+                    'user_id',
+                    'status',
+                    'is_archive',
+                    'executor_id',
+                    'view_counter',
+                    'response_counter',
+                    
+                    'created_at',
+                    'updated_at',
+                    'created_by',
+                    'updated_by',
+                    'valuta',
+                    'budget_type'
+                ],
+                'integer'
+            ],
+            [
+                [
+                    'description',
+                    'tags',
+                    'money_type',
+                    'placement'
+                ],
+                'string'
+            ],
+            [
+                [
+                    'money'
+                ],
+                'safe'
+            ],
+            [
+                [
+                    'w_ids'
+                ],
+                'safe'
+            ],
+            [
+                [
+                    'placements'
+                ],
+                'safe'
+            ],
+            [
+                [
+                    'budget'
+                ],
+                'number'
+            ],
+            [
+                [
+                    'start',
+                    'deadline'
+                ],
+                'safe'
+            ],
+            [
+                [
+                    'title'
+                ],
+                'string',
+                'max' => 255
+            ],
+            [
+                [
+                    'user_id'
+                ],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::className(),
+                'targetAttribute' => [
+                    'user_id' => 'id'
+                ]
+            ]
         ];
     }
 
-    public function beforeSave($insert) {
+    public function beforeSave($insert)
+    {
         if (parent::beforeSave($insert)) {
             $this->money_type = Json::encode($this->money);
             $this->placement = Json::encode($this->placements);
@@ -194,41 +338,46 @@ class Order extends \yii\db\ActiveRecord
         }
         return false;
     }
-    
-    public function afterSave($insert, $changedAttributes) {
+
+    public function afterSave($insert, $changedAttributes)
+    {
         parent::afterSave($insert, $changedAttributes);
         $this->saveWorkings();
         $this->updateOrder();
     }
-    
-    private function saveWorkings() {
+
+    private function saveWorkings()
+    {
         \Yii::$app->db->createCommand('
                 delete from order_working where order_id=:order_id
-            ',[
-                ':order_id' => $this->id
-            ])->execute();
-//            VarDumper::dump($this->w_ids,10,true);die;
-            if (is_array($this->w_ids)) {
-                VarDumper::dump($this->w_ids,10,true);
-                foreach ($this->w_ids as $w_id) {
-                    \Yii::$app->db->createCommand('
+            ', [
+            ':order_id' => $this->id
+        ])->execute();
+        // VarDumper::dump($this->w_ids,10,true);die;
+        if (is_array($this->w_ids)) {
+//            VarDumper::dump($this->w_ids, 10, true);
+            foreach ($this->w_ids as $w_id) {
+                \Yii::$app->db->createCommand('
                         insert into order_working (order_id, working_id) values (:order_id, :working_id)
-                    ',[
-                        ':order_id' => $this->id,
-                        ':working_id' => $w_id
-                    ])->execute();
-                }
+                    ', [
+                    ':order_id' => $this->id,
+                    ':working_id' => $w_id
+                ])->execute();
             }
+        }
     }
-    
-    private function updateOrder() {
+
+    private function updateOrder()
+    {
         $activeOrders = \Yii::$app->db->createCommand('
             select
                 count(*)
             from
                 `order`
             where
-                user_id=:user_id  AND is_archive=0',[':user_id' => \Yii::$app->user->id])->queryScalar();
+                user_id=:user_id  AND is_archive=0', [
+            ':user_id' => \Yii::$app->user->id
+        ])->queryScalar();
         
         $allOrders = \Yii::$app->db->createCommand('
             select
@@ -236,7 +385,9 @@ class Order extends \yii\db\ActiveRecord
             from
                 `order`
             where
-                user_id=:user_id',[':user_id' => \Yii::$app->user->id])->queryScalar();
+                user_id=:user_id', [
+            ':user_id' => \Yii::$app->user->id
+        ])->queryScalar();
         
         \Yii::$app->db->createCommand('
             update 
@@ -246,20 +397,21 @@ class Order extends \yii\db\ActiveRecord
                 order_placed_counter=:all
             where
                 user_id=:user_id
-        ',[
+        ', [
             ':actual' => $activeOrders,
             ':all' => $allOrders,
             ':user_id' => $this->user_id
         ])->execute();
     }
-    
-    public function afterFind() {
+
+    public function afterFind()
+    {
         $this->money = Json::decode($this->money_type);
         $this->placements = Json::decode($this->placement);
         
         $ids = \Yii::$app->db->createCommand('
             select working_id from order_working where order_id=:order_id
-        ',[
+        ', [
             ':order_id' => $this->id
         ])->queryAll();
         
@@ -267,9 +419,11 @@ class Order extends \yii\db\ActiveRecord
         
         return parent::afterFind();
     }
-    
+
     /**
+     *
      * {@inheritdoc}
+     *
      */
     public function attributeLabels()
     {
@@ -288,7 +442,7 @@ class Order extends \yii\db\ActiveRecord
             'executor_id' => 'Исполнитель',
             'view_counter' => 'Просмотров',
             'response_counter' => 'Откликов',
-            'money' => 'Способ оплаты',            
+            'money' => 'Способ оплаты',
             'tags' => 'Теги',
             'created_at' => 'Создано',
             'updated_at' => 'Отредактировано',
@@ -299,33 +453,45 @@ class Order extends \yii\db\ActiveRecord
             'placements' => 'Местоположения'
         ];
     }
-    public function attributeHints() {
+
+    public function attributeHints()
+    {
         return [
             'placement' => 'Через запятую'
         ];
     }
-    
-    public function getProfile() {
-        return $this->hasOne(Profile::className(), ['user_id' => 'user_id']);
+
+    public function getProfile()
+    {
+        return $this->hasOne(Profile::className(), [
+            'user_id' => 'user_id'
+        ]);
     }
 
     /**
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'user_id']);
+        return $this->hasOne(User::className(), [
+            'id' => 'user_id'
+        ]);
     }
 
     /**
+     *
      * @return \yii\db\ActiveQuery
      */
     public function getOrderWorkings()
     {
-        return $this->hasMany(OrderWorking::className(), ['order_id' => 'id']);
+        return $this->hasMany(OrderWorking::className(), [
+            'order_id' => 'id'
+        ]);
     }
-    
-    public function getMoneyTypesAsArray() {
+
+    public function getMoneyTypesAsArray()
+    {
         $ret = [];
         if (is_array($this->money)) {
             foreach ($this->money as $m) {
@@ -334,8 +500,9 @@ class Order extends \yii\db\ActiveRecord
         }
         return $ret;
     }
-    
-    public function getWorkingsAsTitleArray() {
+
+    public function getWorkingsAsTitleArray()
+    {
         $ret = [];
         $wss = $this->workings;
         foreach ($wss as $ws) {
@@ -343,8 +510,13 @@ class Order extends \yii\db\ActiveRecord
         }
         return $ret;
     }
-    
-    public function getWorkings() {
-        return $this->hasMany(Working::className(), ['id' => 'working_id'])->viaTable('order_working', ['order_id' => 'id']);
+
+    public function getWorkings()
+    {
+        return $this->hasMany(Working::className(), [
+            'id' => 'working_id'
+        ])->viaTable('order_working', [
+            'order_id' => 'id'
+        ]);
     }
 }

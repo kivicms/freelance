@@ -38,9 +38,9 @@ class RegistrationFormWithProfile extends RegistrationForm
 	public function attributeLabels()
 	{
 		return ArrayHelper::merge(parent::attributeLabels(), [
-			'title' => 'Наименование',
-			'phone' => 'Телефон',
-		    'email' => 'E-Mail'
+			'title' => 'Наименование ООО или ИП',
+			'phone' => 'Личный телефон',
+		    'email' => 'Личный E-Mail'
 		]);
 	}
 

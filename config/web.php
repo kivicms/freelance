@@ -22,6 +22,23 @@ $config = [
         '@npm' => '@vendor/npm-asset'
     ],
     'components' => [
+        
+        'urlManager' => [
+            'enablePrettyUrl' => true,
+            'enableStrictParsing' => false,
+            'showScriptName' => false,
+            'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule', 
+                    'pluralize' => true,
+                    'controller' => [
+                        'api/order'   
+                    ]                    
+                ],
+                'POST logins' => 'login/index'
+            ],
+        ],
+        
         'i18n' => [
             'translations' => [
                 'yii2mod.comments' => [
@@ -50,8 +67,32 @@ $config = [
         ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-            'cookieValidationKey' => 'Dld_1x_VHoX6LD-MDNSv4s42S-UzKOSq'
+            'cookieValidationKey' => 'Dld_1x_VHoX6LD-MDNSv4s42S-UzKOSq',
+            'parsers' => [
+                'application/json' => 'yii\web\JsonParser'
+            ],
         ],
+        'response' => [
+            'formatters' => [
+                \yii\web\Response::FORMAT_JSON => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => false,
+                    'encodeOptions' => JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+                ]
+            ],
+            'on beforeSend' => function ($event) {
+                header("Access-Control-Allow-Origin: *");
+                $response = $event->sender;
+                if ($response->data !== null && !empty(Yii::$app->request->get('suppress_response_code'))) {
+                    $response->data = [
+                        'success' => $response->isSuccessful,
+                        'data' => $response->data,
+                    ];
+                    $response->statusCode = 200;
+                }
+            }
+        ],
+            
         'cache' => [
             'class' => 'yii\caching\FileCache'
         ],
@@ -96,6 +137,9 @@ $config = [
      */
     ],
     'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\Module',
+        ],
         'profile' => [
             'class' => 'app\modules\profile\Module',
         ],

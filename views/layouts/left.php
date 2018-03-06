@@ -38,7 +38,12 @@ if ( User::hasRole('company', false) && \Yii::$app->user->identity->profile->is_
     
     $items[] = ['label' => 'Друзья', 'icon' => 'file-code-o', 'url' => ['/profile/default/index'],
         'items' => [
-            ['label' => 'Я подписан', 'badge' => \Yii::$app->user->identity->profile->following_counter,  'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'ifollowing']],
+            [
+                'label' => 'Я подписан', 
+                'badge' => \Yii::$app->user->identity->profile->following_counter,  
+                'icon' => 'file-code-o', 
+                'url' => ['/profile/default/index', 'tab' => 'ifollowing', '#' => 'w0-tab2']                
+            ],
             ['label' => 'Мои подписчики', 'badge' => \Yii::$app->user->identity->profile->follower_counter, 'icon' => 'file-code-o', 'url' => ['/profile/default/index', 'tab' => 'myfollowers']],
         ]
     ];

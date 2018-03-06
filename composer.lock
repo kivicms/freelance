@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe57113f811f2a3d2406abc73102a9b9",
+    "content-hash": "2673971e86742980d37c610763077b51",
     "packages": [
         {
             "name": "2amigos/yii2-gallery-widget",
@@ -739,6 +739,48 @@
             "time": "2016-02-02T10:23:58+00:00"
         },
         {
+            "name": "himiklab/yii2-search-component-v2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/himiklab/yii2-search-component-v2.git",
+                "reference": "4a8999a845c19637dd041d8790b7762a20005208"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/himiklab/yii2-search-component-v2/zipball/4a8999a845c19637dd041d8790b7762a20005208",
+                "reference": "4a8999a845c19637dd041d8790b7762a20005208",
+                "shasum": ""
+            },
+            "require": {
+                "yiisoft/yii2": "*",
+                "zendframework/zendsearch": "*@RC"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "himiklab\\yii2\\search\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "HimikLab",
+                    "homepage": "https://github.com/himiklab/"
+                }
+            ],
+            "description": "Yii2 Zend Lucene search component v2",
+            "keywords": [
+                "lucene",
+                "search",
+                "yii2"
+            ],
+            "time": "2017-11-02T09:25:10+00:00"
+        },
+        {
             "name": "ikimea/browser",
             "version": "1.12.0",
             "source": {
@@ -1262,17 +1304,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/briannesbitt/Carbon.git",
-                "reference": "926aee5ab38c2868816aa760f862a85ad01cb61a"
+                "reference": "52394806eb869d01b8c3e3692a6465bbb98f215e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/926aee5ab38c2868816aa760f862a85ad01cb61a",
-                "reference": "926aee5ab38c2868816aa760f862a85ad01cb61a",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/52394806eb869d01b8c3e3692a6465bbb98f215e",
+                "reference": "52394806eb869d01b8c3e3692a6465bbb98f215e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0",
-                "symfony/translation": "~2.6 || ~3.0"
+                "symfony/translation": "~2.6 || ~3.0 || ~4.0"
             },
             "require-dev": {
                 "friendsofphp/php-cs-fixer": "~2",
@@ -1307,7 +1349,7 @@
                 "datetime",
                 "time"
             ],
-            "time": "2017-02-06T22:02:47+00:00"
+            "time": "2018-02-21T19:29:12+00:00"
         },
         {
             "name": "paulzi/yii2-adjacency-list",
@@ -2085,12 +2127,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "2186083fbd4f427222f094d0a7a640354faf9224"
+                "reference": "7d8c56ecc823f76a0dfe88336e7b124bdbb37024"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/2186083fbd4f427222f094d0a7a640354faf9224",
-                "reference": "2186083fbd4f427222f094d0a7a640354faf9224",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/7d8c56ecc823f76a0dfe88336e7b124bdbb37024",
+                "reference": "7d8c56ecc823f76a0dfe88336e7b124bdbb37024",
                 "shasum": ""
             },
             "require": {
@@ -2177,7 +2219,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2018-02-10T10:34:35+00:00"
+            "time": "2018-02-21T06:34:05+00:00"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
@@ -2185,12 +2227,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "30eee2b651453df49773d568713f7c9f9aa88053"
+                "reference": "80f7a1681672257e5a5df33578e5df418336d745"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/30eee2b651453df49773d568713f7c9f9aa88053",
-                "reference": "30eee2b651453df49773d568713f7c9f9aa88053",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/80f7a1681672257e5a5df33578e5df418336d745",
+                "reference": "80f7a1681672257e5a5df33578e5df418336d745",
                 "shasum": ""
             },
             "require": {
@@ -2237,7 +2279,7 @@
                 "bootstrap",
                 "yii2"
             ],
-            "time": "2018-02-05T12:12:44+00:00"
+            "time": "2018-02-16T10:42:23+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -2338,6 +2380,97 @@
                 "yii2"
             ],
             "time": "2017-05-01T08:29:00+00:00"
+        },
+        {
+            "name": "zendframework/zend-stdlib",
+            "version": "2.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/zend-stdlib.git",
+                "reference": "6079302963d57f36a9ba92ed3f38b992997aa78d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/zend-stdlib/zipball/6079302963d57f36a9ba92ed3f38b992997aa78d",
+                "reference": "6079302963d57f36a9ba92ed3f38b992997aa78d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.23"
+            },
+            "require-dev": {
+                "fabpot/php-cs-fixer": "1.7.*",
+                "phpunit/phpunit": "~4.0",
+                "satooshi/php-coveralls": "dev-master",
+                "zendframework/zend-eventmanager": "self.version",
+                "zendframework/zend-filter": "self.version",
+                "zendframework/zend-serializer": "self.version",
+                "zendframework/zend-servicemanager": "self.version"
+            },
+            "suggest": {
+                "zendframework/zend-eventmanager": "To support aggregate hydrator usage",
+                "zendframework/zend-filter": "To support naming strategy hydrator usage",
+                "zendframework/zend-serializer": "Zend\\Serializer component",
+                "zendframework/zend-servicemanager": "To support hydrator plugin manager usage"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.3-dev",
+                    "dev-develop": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zend\\Stdlib\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "homepage": "https://github.com/zendframework/zend-stdlib",
+            "keywords": [
+                "stdlib",
+                "zf2"
+            ],
+            "time": "2014-04-15T13:59:53+00:00"
+        },
+        {
+            "name": "zendframework/zendsearch",
+            "version": "2.0.0rc5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zendframework/ZendSearch.git",
+                "reference": "75aa52ffc5761e73015cf5d77eef324f7c6a9a7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zendframework/ZendSearch/zipball/75aa52ffc5761e73015cf5d77eef324f7c6a9a7d",
+                "reference": "75aa52ffc5761e73015cf5d77eef324f7c6a9a7d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3",
+                "zendframework/zend-stdlib": "self.version"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "ZendSearch": "library/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "a general purpose text search engine written entirely in PHP 5",
+            "homepage": "http://packages.zendframework.com/",
+            "keywords": [
+                "lucene",
+                "zf2"
+            ],
+            "time": "2012-07-23T17:01:08+00:00"
         }
     ],
     "packages-dev": [
@@ -2451,16 +2584,16 @@
         },
         {
             "name": "bower-asset/highcharts",
-            "version": "v6.0.6",
+            "version": "v6.0.7",
             "source": {
                 "type": "git",
-                "url": "git@github.com:highcharts/highcharts-dist.git",
-                "reference": "8442d9458294b52c7042ae24e8883e739fc08d89"
+                "url": "https://github.com/highcharts/highcharts-dist.git",
+                "reference": "242a129c6ba743e9be707b4ec6ee942e685e0bfc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/highcharts/highcharts-dist/zipball/8442d9458294b52c7042ae24e8883e739fc08d89",
-                "reference": "8442d9458294b52c7042ae24e8883e739fc08d89",
+                "url": "https://api.github.com/repos/highcharts/highcharts-dist/zipball/242a129c6ba743e9be707b4ec6ee942e685e0bfc",
+                "reference": "242a129c6ba743e9be707b4ec6ee942e685e0bfc",
                 "shasum": null
             },
             "type": "bower-asset",
@@ -2621,23 +2754,23 @@
         },
         {
             "name": "codeception/stub",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Stub.git",
-                "reference": "673ea54cdd7141e0a5138ad78aaa60751912f573"
+                "reference": "95fb7a36b81890dd2e5163e7ab31310df6f1bb99"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Stub/zipball/673ea54cdd7141e0a5138ad78aaa60751912f573",
-                "reference": "673ea54cdd7141e0a5138ad78aaa60751912f573",
+                "url": "https://api.github.com/repos/Codeception/Stub/zipball/95fb7a36b81890dd2e5163e7ab31310df6f1bb99",
+                "reference": "95fb7a36b81890dd2e5163e7ab31310df6f1bb99",
                 "shasum": ""
             },
             "require": {
-                "phpunit/phpunit-mock-objects": "^2.3|^3.0|^4.0|^5.0"
+                "phpunit/phpunit-mock-objects": ">2.3 <7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.8|^5.0|^6.0|^7.0"
+                "phpunit/phpunit": ">=4.8 <8.0"
             },
             "type": "library",
             "autoload": {
@@ -2650,7 +2783,7 @@
                 "MIT"
             ],
             "description": "Flexible Stub wrapper for PHPUnit's Mock Builder",
-            "time": "2018-01-27T00:37:17+00:00"
+            "time": "2018-02-18T13:56:56+00:00"
         },
         {
             "name": "codeception/verify",
@@ -2796,12 +2929,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fzaninotto/Faker.git",
-                "reference": "c8db65327b73c8e0fa1c9e4d8d179d14a185b13a"
+                "reference": "5dce1159142a1ba0fcab4672cb295bf7d8f98824"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/c8db65327b73c8e0fa1c9e4d8d179d14a185b13a",
-                "reference": "c8db65327b73c8e0fa1c9e4d8d179d14a185b13a",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/5dce1159142a1ba0fcab4672cb295bf7d8f98824",
+                "reference": "5dce1159142a1ba0fcab4672cb295bf7d8f98824",
                 "shasum": ""
             },
             "require": {
@@ -2838,7 +2971,7 @@
                 "faker",
                 "fixtures"
             ],
-            "time": "2018-02-05T15:03:34+00:00"
+            "time": "2018-02-14T13:50:47+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -3416,12 +3549,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-depdrop.git",
-                "reference": "6918ca6f7d7be153c80f6aa9c261f9b333293e9c"
+                "reference": "aacc064f76911ee295227058c689967d50c61fcd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-depdrop/zipball/6918ca6f7d7be153c80f6aa9c261f9b333293e9c",
-                "reference": "6918ca6f7d7be153c80f6aa9c261f9b333293e9c",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-depdrop/zipball/aacc064f76911ee295227058c689967d50c61fcd",
+                "reference": "aacc064f76911ee295227058c689967d50c61fcd",
                 "shasum": ""
             },
             "require": {
@@ -3457,7 +3590,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2016-01-10T17:30:48+00:00"
+            "time": "2018-02-20T09:27:10+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-growl",
@@ -4424,12 +4557,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "9a84d1c09fbf7918e9d3cf998b83ecbf7555261d"
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/9a84d1c09fbf7918e9d3cf998b83ecbf7555261d",
-                "reference": "9a84d1c09fbf7918e9d3cf998b83ecbf7555261d",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
                 "shasum": ""
             },
             "require": {
@@ -4479,7 +4612,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-12-21T16:59:48+00:00"
+            "time": "2018-02-19T10:16:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -4736,12 +4869,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "3330ef26ade05359d006041316ed0fa9e8e3cefe"
+                "reference": "80798b8043cb3b4e770c21e64d4fbc2efdda7942"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/3330ef26ade05359d006041316ed0fa9e8e3cefe",
-                "reference": "3330ef26ade05359d006041316ed0fa9e8e3cefe",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/80798b8043cb3b4e770c21e64d4fbc2efdda7942",
+                "reference": "80798b8043cb3b4e770c21e64d4fbc2efdda7942",
                 "shasum": ""
             },
             "require": {
@@ -4812,7 +4945,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2018-02-01T05:57:37+00:00"
+            "time": "2018-02-16T06:05:42+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -6083,12 +6216,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-debug.git",
-                "reference": "7311e6b0aeaf3eb59084300dd323e2c7dd81596d"
+                "reference": "f7d51457c7c59f02aca9bbaabcded00e81800adb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/7311e6b0aeaf3eb59084300dd323e2c7dd81596d",
-                "reference": "7311e6b0aeaf3eb59084300dd323e2c7dd81596d",
+                "url": "https://api.github.com/repos/yiisoft/yii2-debug/zipball/f7d51457c7c59f02aca9bbaabcded00e81800adb",
+                "reference": "f7d51457c7c59f02aca9bbaabcded00e81800adb",
                 "shasum": ""
             },
             "require": {
@@ -6103,7 +6236,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\debug\\": ""
+                    "yii\\debug\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6122,7 +6255,7 @@
                 "debugger",
                 "yii2"
             ],
-            "time": "2018-02-07T14:46:34+00:00"
+            "time": "2018-02-18T20:12:50+00:00"
         },
         {
             "name": "yiisoft/yii2-faker",
@@ -6130,12 +6263,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-faker.git",
-                "reference": "1d2154a5053dd1a628455d81542e3436d653047e"
+                "reference": "bc6238fc7478d0eb252ee7144d98b9c6e732ec55"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/1d2154a5053dd1a628455d81542e3436d653047e",
-                "reference": "1d2154a5053dd1a628455d81542e3436d653047e",
+                "url": "https://api.github.com/repos/yiisoft/yii2-faker/zipball/bc6238fc7478d0eb252ee7144d98b9c6e732ec55",
+                "reference": "bc6238fc7478d0eb252ee7144d98b9c6e732ec55",
                 "shasum": ""
             },
             "require": {
@@ -6169,7 +6302,7 @@
                 "faker",
                 "yii2"
             ],
-            "time": "2018-02-05T08:50:49+00:00"
+            "time": "2018-02-19T20:27:40+00:00"
         },
         {
             "name": "yiisoft/yii2-gii",
@@ -6177,12 +6310,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-gii.git",
-                "reference": "eff0d4f859b4dce7947dc9ec74ca963024c3c188"
+                "reference": "01883a8df21d0eedd64a5459454d6fc5e2d54bbb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/eff0d4f859b4dce7947dc9ec74ca963024c3c188",
-                "reference": "eff0d4f859b4dce7947dc9ec74ca963024c3c188",
+                "url": "https://api.github.com/repos/yiisoft/yii2-gii/zipball/01883a8df21d0eedd64a5459454d6fc5e2d54bbb",
+                "reference": "01883a8df21d0eedd64a5459454d6fc5e2d54bbb",
                 "shasum": ""
             },
             "require": {
@@ -6203,7 +6336,7 @@
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\gii\\": ""
+                    "yii\\gii\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -6222,10 +6355,17 @@
                 "gii",
                 "yii2"
             ],
-            "time": "2018-01-23T11:15:52+00:00"
+            "time": "2018-02-16T16:04:04+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "2.0.0rc5",
+            "alias_normalized": "2.0.0.0-RC5",
+            "version": "2.3.1.0",
+            "package": "zendframework/zend-stdlib"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
         "kartik-v/yii2-widget-fileinput": 20,

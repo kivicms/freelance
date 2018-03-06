@@ -20,7 +20,7 @@
 	"minimum-stability" : "dev",
 	"require" : {
 		"php" : ">=5.4.0",
-		"yiisoft/yii2" : "~2.0.5",
+		"yiisoft/yii2" : "~2.0.14",
 		"yiisoft/yii2-bootstrap" : "~2.0.0",
 		"yiisoft/yii2-swiftmailer" : "~2.0.0",
 		"webvimark/module-user-management" : "^1.0",
@@ -29,8 +29,11 @@
 		"yii2mod/yii2-comments" : "*",
 		"kartik-v/yii2-sortable-input" : "*",
 		"kartik-v/yii2-money" : "*",
-		"2amigos/yii2-gallery-widget": "~1.0",
-		"kartik-v/yii2-tabs-x": "*"
+		"2amigos/yii2-gallery-widget" : "~1.0",
+		"kartik-v/yii2-tabs-x" : "*",
+		"zendframework/zendsearch": "2.0.0rc5",
+		"zendframework/zend-stdlib": "2.3.1 as 2.0.0rc5",
+		"himiklab/yii2-search-component-v2": "*"
 	},
 	"require-dev" : {
 		"yiisoft/yii2-debug" : "~2.0.0",

@@ -17,6 +17,7 @@ use yii\web\HttpException;
 use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use yii\helpers\Json;
+use yii\data\ArrayDataProvider;
 
 /**
  * DefaultController implements the CRUD actions for Order model.
@@ -36,6 +37,25 @@ class DefaultController extends BaseController
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);
+    }
+    
+    public function actionSearch($q = '')
+    {
+        /** @var \himiklab\yii2\search\Search $search */
+        $search = Yii::$app->search;
+        $searchData = $search->find($q); // Search by full index.
+        //$searchData = $search->find($q, ['model' => 'page']); // Search by index provided only by model `page`.
+        
+        $dataProvider = new ArrayDataProvider([
+            'allModels' => $searchData['results'],
+            'pagination' => ['pageSize' => 10],
+        ]);
+        
+        return $this->render('found',[
+            'hits' => $dataProvider->getModels(),
+            'pagination' => $dataProvider->getPagination(),
+            'query' => $searchData['query']
         ]);
     }
     
