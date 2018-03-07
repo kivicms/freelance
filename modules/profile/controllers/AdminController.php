@@ -5,6 +5,7 @@ use app\controllers\BaseController;
 use app\modules\profile\models\Profile;
 use yii\web\NotFoundHttpException;
 use app\helpers\NotifyHelper;
+use yii\helpers\VarDumper;
 
 class AdminController extends BaseController {
     
@@ -28,6 +29,19 @@ class AdminController extends BaseController {
         ]); 
     }
     
+    public function actionRefuse($id) {
+        $model = $this->findModel($id);
+        if (isset($_POST['Profile'])) {
+            $model->refuse_content = $_POST['Profile']['refuse_content'];
+            // VarDumper::dump($model,10,true);die;
+            // $model->save(false,['refuse_content']);
+            NotifyHelper::send($model->user_id, 'Верификация не пройдена!', $model->refuse_content);
+        }
+        $models = Profile::find()->where('is_verified=:status', [':status' => Profile::PROFILE_VERIFIED_NO])->all();
+        return $this->render('index', [
+            'models' => $models
+        ]); 
+    }
    
     public function actionView($id) {
         return $this->render('view',[

@@ -136,9 +136,18 @@ $this->params['breeadcrumbs'][] = $this->title;
     		<?= \dvizh\gallery\widgets\Gallery::widget(
                 [
                     'model' => $model,
+                    'label' => 'Фото',
                     'previewSize' => '50x50',
                     'fileInputPluginLoading' => true,
-                    'fileInputPluginOptions' => []
+                    'fileInputPluginOptions' => [
+                        'showCaption' => false,
+                        'showRemove' => false,
+                        'showUpload' => false,
+                        'browseClass' => 'btn btn-primary btn-block',
+                        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+                        'browseLabel' =>  'Выбрать фото'
+    		       ]
+                    
                 ]
             ); ?>
 		</div>
@@ -152,7 +161,13 @@ $this->params['breeadcrumbs'][] = $this->title;
             		'multiple' => true, // If you want to allow multiple upload, default to false
             	],
             	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
-            		'maxFileCount' => 10 // Client max files
+            		'maxFileCount' => 10, // Client max files
+            	    'showCaption' => false,
+            	    'showRemove' => false,
+            	    'showUpload' => false,
+            	    'browseClass' => 'btn btn-primary btn-block',
+            	    'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+            	    'browseLabel' =>  'Выберите файлы'
             	]
             ]) ?>
 		</div>	

@@ -35,6 +35,8 @@ use app\models\User;
  */
 class Profile extends \yii\db\ActiveRecord
 {
+    public $refuse_content;
+    
     public $w_ids = [];
     
     const LEGAL_OOO = 0;
@@ -103,7 +105,7 @@ class Profile extends \yii\db\ActiveRecord
             [['phone', 'title', 'email', 'inn', 'position'], 'required'],            
             [['description', 'www', 'lastname', 'firstname', 'middlename'], 'string'],
             [['www'], 'url', 'defaultScheme' => 'http'],
-            [['w_ids'], 'safe'],
+            [['w_ids', 'refuse_content'], 'safe'],
             [['phone'], 'string', 'max' => 20],
             [['position'], 'string', 'max' => 30],
             [['email'], 'email'],
@@ -169,8 +171,10 @@ class Profile extends \yii\db\ActiveRecord
             'address_fact' => 'Фактический адрес',
             'address_legal' => 'Юридический адрес',
             'is_verified' => 'Проверено',
+            'refuse_content' => 'Причина отказа',
             'executed_orders' => 'Выполнено заказов',
-            'w_ids' => 'Категории'
+            'w_ids' => 'Категории',
+            'fullCompanyName' => 'Полное наименование компании'
         ];
     }
 

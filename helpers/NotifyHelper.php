@@ -11,7 +11,7 @@ class NotifyHelper {
         'UserVerified' => [
             'title' => 'Подтверждение профиля',
             'description' => 'Поздравляем! Ваш профиль успешно подтвержден. Теперь Вы можете пользоваться сайтом в полном объеме!'
-        ]  
+        ],
     ];
     
     public static function sendTemplate($to_user_id, $template) {        

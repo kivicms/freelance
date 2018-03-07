@@ -245,7 +245,8 @@ class Order extends \yii\db\ActiveRecord implements Linkable
                     'budget',
                     'valuta',
                     'money',
-                    'placements'
+                    'placements',
+                    'w_ids'
                 ],
                 'required'
             ],

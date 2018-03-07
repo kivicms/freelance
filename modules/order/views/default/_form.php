@@ -69,7 +69,8 @@ use app\modules\catalog\models\Working;
 			<?=  
 			$form->field($model, 'budget')->widget(MaskMoney::classname(), [
 			    'pluginOptions' => [
-			        'allowNegative' => false
+			        'allowNegative' => false,
+			        'prefix' => '$ ',
 			    ]
 			]);
 			?>
@@ -120,7 +121,7 @@ use app\modules\catalog\models\Working;
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-6">
 			
 			<?= \dvizh\gallery\widgets\Gallery::widget(
                 [
@@ -128,12 +129,19 @@ use app\modules\catalog\models\Working;
                     'label' => 'Фотографии',
                     'previewSize' => '115x115',
                     'fileInputPluginLoading' => true,
-                    'fileInputPluginOptions' => []
+                    'fileInputPluginOptions' => [
+                        'showCaption' => false,
+                        'showRemove' => false,
+                        'showUpload' => false,
+                        'browseClass' => 'btn btn-primary btn-block',
+                        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+                        'browseLabel' =>  'Выбрать фото'
+			         ]
                 ]
             ); ?>
 		</div>
 		
-		<div class="col-md-12">
+		<div class="col-md-6">
 			<h4>Документы</h4>
 			<?= \nemmo\attachments\components\AttachmentsInput::widget([
             	'id' => 'file-input', // Optional
@@ -142,7 +150,13 @@ use app\modules\catalog\models\Working;
             		'multiple' => true, // If you want to allow multiple upload, default to false
             	],
             	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
-            		'maxFileCount' => 10 // Client max files
+            	    'maxFileCount' => 10, // Client max files
+            	    'showCaption' => false,
+            	    'showRemove' => false,
+            	    'showUpload' => false,
+            	    'browseClass' => 'btn btn-primary btn-block',
+            	    'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+            	    'browseLabel' =>  'Выберите файлы'
             	]
             ]) ?>
 		</div>
