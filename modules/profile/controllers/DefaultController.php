@@ -13,6 +13,7 @@ use app\modules\profile\models\ProfileSearch;
 use yii\helpers\Json;
 use yii\web\Response;
 use yii\widgets\ActiveForm;
+use app\models\User;
 
 class DefaultController extends BaseController {
     
@@ -24,6 +25,10 @@ class DefaultController extends BaseController {
     
     public function actionUpdate($id = null) {
         $model = $this->findModel($id);
+        if ($model->user_id !== \Yii::$app->user->id ) {
+            throw new NotFoundHttpException('Вы не имеете права редактировать эту страницу');
+            
+        }
         
         if ($model->load(\Yii::$app->request->post()) && $model->save()) {
             

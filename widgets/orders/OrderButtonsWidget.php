@@ -10,7 +10,7 @@ class OrderButtonsWidget extends Widget {
     
     public function run() {
         return '<div class="btn-group">' . 
-            Html::a('Все заказы', ['index'], ['class' => 'btn ' . ($this->active == 'index' ? 'btn-info' : 'btn-default')]) . ' ' . 
+            Html::a('Поиск заказов', ['index'], ['class' => 'btn ' . ($this->active == 'index' ? 'btn-info' : 'btn-default')]) . ' ' . 
             Html::a('Я заказчик', ['i-customer'], ['class' => 'btn ' . ($this->active == 'i-customer' ? 'btn-info' : 'btn-default')]) . ' ' .
             Html::a('Я исполнитель', ['i-executor'], ['class' => 'btn ' . ($this->active == 'i-executor' ? 'btn-info' : 'btn-default')]) .
             Html::a('Мои отклики', ['my-response'], ['class' => 'btn ' . ($this->active == 'my-response' ? 'btn-info' : 'btn-default')]) .

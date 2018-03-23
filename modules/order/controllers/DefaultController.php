@@ -18,6 +18,8 @@ use yii\helpers\Url;
 use yii\helpers\VarDumper;
 use yii\helpers\Json;
 use yii\data\ArrayDataProvider;
+use yii\web\Response;
+use yii\widgets\ActiveForm;
 
 /**
  * DefaultController implements the CRUD actions for Order model.
@@ -81,7 +83,15 @@ class DefaultController extends BaseController
         ]);
     }
     
-    
+    public function actionMyResponse() {
+        $searchModel = new OrderSearch();
+        $dataProvider = $searchModel->searchMyResposne(Yii::$app->request->post());
+        
+        return $this->render('my-response', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
     public function actionResponse() {
         $model = new OrderResponse();
         
@@ -90,13 +100,18 @@ class DefaultController extends BaseController
             $order->response_counter ++;
             $order->save(false, ['response_counter']);
         }
+        NotifyHelper::send(
+            $model->order->profile->user_id, 
+            'Вам поступило новое предложение по заказу' , 
+            'Вам поступило новое предложение по заказу ' . Html::a($model->order->title,['/order/default/view', 'id' => $model->order_id]) );
         return $this->redirect(['view', 'id' => $model->order->id]);
     }
     
     public function actionSetExecutor($id, $executor_id) {
         $model = $this->findModel($id);
         $model->executor_id = $executor_id;
-        $model->save(false,['executor_id']);
+        $model->status = Order::STATUS_EXECUTED;
+        $model->save(false,['executor_id', 'status']);
         
         $profile = Profile::find()->where('user_id=:id',[':id' => $executor_id])->one();
         $profile->executed_orders ++;
@@ -145,6 +160,38 @@ class DefaultController extends BaseController
             \Yii::$app->session->setFlash('info', 'Уведомление о исполнении отправлено исполнителю. Заказ перемещен в архив.');
         }
         return $this->redirect(Url::previous());
+    }
+    
+    public function actionValidate() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            
+            $model = new Order();
+            
+            if ($model->load(Yii::$app->request->post())) {
+                if ($errors = ActiveForm::validate($model)) {                    
+                    return $errors;
+                } else {
+                    return true;
+                }
+            }
+        }
+    }
+    
+    public function actionValidateResponse() {
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        if (Yii::$app->request->isAjax) {
+            
+            $model = new OrderResponse();
+            
+            if ($model->load(Yii::$app->request->post())) {
+                if ($errors = ActiveForm::validate($model)) {                    
+                    return $errors;
+                } else {
+                    return true;
+                }
+            }
+        }
     }
     
     public function actionMy()

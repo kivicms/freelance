@@ -16,7 +16,13 @@ use yii\helpers\Url;
 
 <?php if (! $model) : ?>	
 	<?php $form = ActiveForm::begin([
-	    'action' => ['/order/default/response']
+	    'action' => ['/order/default/response'],
+	    'options' => ['enctype' => 'multipart/form-data'],
+	    'enableClientValidation' => false,
+	    'enableAjaxValidation' => true,
+	    'validationUrl' => [
+	        '/order/default/validate-response'
+	    ]
 	]) ?>
 	<?= $form->field($response, 'order_id')->hiddenInput()->label(false) ?>
 	<?= $form->field($response, 'from_user_id')->hiddenInput()->label(false) ?>
@@ -56,7 +62,8 @@ use yii\helpers\Url;
     		<?=  
     		$form->field($response, 'cost')->widget(MaskMoney::classname(), [
 			    'pluginOptions' => [
-			        'allowNegative' => false
+			        'allowNegative' => false,
+			        'prefix' => '$ ',
 			    ]
 			]);
 			?>
@@ -69,9 +76,15 @@ use yii\helpers\Url;
             	'options' => [ // Options of the Kartik's FileInput widget
             		'multiple' => true, // If you want to allow multiple upload, default to false
             	],
-            	'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget 
-            		'maxFileCount' => 10 // Client max files
-            	]
+			    'pluginOptions' => [ // Plugin options of the Kartik's FileInput widget
+			        'maxFileCount' => 10, // Client max files
+			        'showCaption' => false,
+			        'showRemove' => false,
+			        'showUpload' => false,
+			        'browseClass' => 'btn btn-primary btn-block',
+			        'browseIcon' => '<i class="glyphicon glyphicon-camera"></i> ',
+			        'browseLabel' =>  'Выберите файлы'
+			    ]
             ]) ?>
 		</div>
     </div>
@@ -99,7 +112,8 @@ use yii\helpers\Url;
 		<?php if (count($model->files) > 0) : ?>
 			<div class="col-md-12">
 				<h5>Портфолио</h5>
-					<?= \nemmo\attachments\components\AttachmentsTable::widget(['model' => $model]) ?>
+					<?= \nemmo\attachments\components\AttachmentsTable::widget([
+					    'model' => $model]) ?>
 			</div>
 		<?php endif; ?>
 		<div class="col-md-12">
@@ -125,11 +139,6 @@ div.kv-file-content img.file-preview-image {
     /* width: 213px; */
     height: 160px;
 }
-div.file-caption {
-    display: none;
-}
-a.fileinput-upload-button, button.fileinput-upload-button {
-    display: none;
-}
+
 ')
 ?>

@@ -5,6 +5,7 @@ use Yii;
 use app\models\User;
 use yii\behaviors\TimestampBehavior;
 use app\modules\profile\models\Profile;
+use yii\helpers\VarDumper;
 
 /**
  * This is the model class for table "order_response".
@@ -52,6 +53,12 @@ class OrderResponse extends \yii\db\ActiveRecord
         return [
             [['order_id', 'from_user_id', 'created_at', 'updated_at', 'readed_time'], 'integer'],
             [['start', 'end'], 'safe'],
+            [['start', 'end'], function ($attribute, $params) {
+                if ( strtotime(date('Y-m-d')) > strtotime($this->$attribute) ) { 
+                    $this->addError($attribute, 'Значение не может быть меньше ' . date('d.m.Y'));
+                }
+            }],
+            
             [['cost'], 'number'],
             [['response', 'cost', 'start', 'end'], 'required'],
             [['response'], 'string'],

@@ -19,6 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php PanelWidget::begin([
         'title' => $this->title,
+        'buttons' => [
+            Html::a('Добавить заказ', ['create'], ['class' => 'btn btn-success'])
+        ]
     ])?>
     
     <div class="row">

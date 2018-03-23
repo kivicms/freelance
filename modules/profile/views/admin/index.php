@@ -54,7 +54,7 @@ $this->params['breadcrumbs'][] = $this->title;
     						<?= DetailView::widget([
                                 'model' => $model,
                                 'attributes' => [
-                                    'fullCompanyName',
+                                    'fullFio',
                                     'email',
                                     [
                                         'attribute' => 'sex',
@@ -71,7 +71,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                     'ogrn',
                                     'ogrnip',
                                     'position',
-                                    'title',
+                                    'fullCompanyName',
+                                    [
+                                        'attribute' => 'workingsAsTitleArray',
+                                        'value' => implode(', ', $model->workingsAsTitleArray)
+                                    ],
                                     'description:ntext',
                                     'address_fact',
                                     'address_legal',

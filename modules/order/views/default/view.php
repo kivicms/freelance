@@ -86,7 +86,7 @@ $this->params['breadcrumbs'][] = $this->title;
         		</div>
         		<div class="col-md-12">
         			<?= Yii::$app->formatter->asDatetime($model->created_at) ?>  • 
-        			<?= '2' ?> отклика  • 
+        			<?= $model->response_counter ?> отклик (ов)  • 
         			<?= $model->view_counter ?> просмотров
         		</div>
         		<br>

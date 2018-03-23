@@ -12,6 +12,7 @@ use app\widgets\orders\ICustomerOrderWidget;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 use app\widgets\AboutUsWidget;
+use yii\widgets\DetailView;
 
 $this->title = 'Профиль пользователя ' . $model->title;
 
@@ -35,7 +36,36 @@ $this->params['breadcrumbs'][] = $this->title;
         	       // Html::a('Редактировать',['/profile/default/update', 'id' => Yii::$app->user->id], ['class' => 'btn btn-info pull-right'])     
         	   ]
         	])?>
-        	
+        	<?= DetailView::widget([
+                                'model' => $model,
+                                'attributes' => [
+                                    'fullFio',
+                                    'email',
+                                    [
+                                        'attribute' => 'sex',
+                                        'value' => Profile::itemAlias('Sex', $model->sex),
+        					        ],
+                                    'phone',
+                                    'www',
+                                    [
+                                        'attribute' => 'type_of_legal',
+                                        'value' => Profile::itemAlias('Legal', $model->type_of_legal)
+        					        ],
+                                    'inn',
+                                    'kpp',
+                                    'ogrn',
+                                    'ogrnip',
+                                    'position',
+                                    'fullCompanyName',
+                                    [
+                                        'attribute' => 'workingsAsTitleArray',
+                                        'value' => implode(', ', $model->workingsAsTitleArray)
+                                    ],
+                                    'description:ntext',
+                                    'address_fact',
+                                    'address_legal',
+                                ]
+                            ])?>
         	
         	
 			<?php PanelWidget::end()?>

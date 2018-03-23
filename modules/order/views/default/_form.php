@@ -16,7 +16,15 @@ use app\modules\catalog\models\Working;
 
 <div class="order-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+    <?php $form = ActiveForm::begin([
+        'options' => ['enctype' => 'multipart/form-data'],
+        'enableClientValidation' => false,
+        'enableAjaxValidation' => true,
+        'validationUrl' => [
+            '/order/default/validate'
+        ]
+    ]); ?>
+    
 	<?php PanelWidget::begin([
 	    'title' => $this->title,
 	    'boxFooter' => [

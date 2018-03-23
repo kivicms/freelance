@@ -45,6 +45,10 @@ $this->params['breadcrumbs'][] = $this->title;
             	        'content' => AboutUsWidget::widget(['model' => $model]),
             	        'active' => (! isset($_GET['tab']) || (isset($_GET['tab']) && $_GET['tab'] == 'aboutus')) ? true : false
             	    ],
+        	        [
+        	           'label' => 'Подробная информация',
+        	            'content' => $this->render('_detail', ['model' => $model]),
+        	       ],
         	       [
         	           'id' => 'my-followers',
         	           'label' => 'Мои подписчики <span class="badge bg-light-blue">' . $model->follower_counter. '</span>',

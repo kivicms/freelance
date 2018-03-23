@@ -25,12 +25,12 @@ $this->params['breeadcrumbs'][] = $this->title;
 <div class="profile-update">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['/profile/default/update', 'id' => $model->id],
+        'action' => ['/profile/default/update', 'id' => $model->user_id],
         'options' => ['enctype' => 'multipart/form-data'],
         'enableClientValidation' => false,
         'enableAjaxValidation' => true,
         'validationUrl' => [
-            '/profile/default/validate', 'id' => $model->id
+            '/profile/default/validate', 'id' => $model->user_id
         ]
         
     ]); ?>

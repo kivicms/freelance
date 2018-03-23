@@ -238,94 +238,22 @@ class Order extends \yii\db\ActiveRecord implements Linkable
     public function rules()
     {
         return [
-            [
-                [
-                    'title',
-                    'description',
-                    'budget',
-                    'valuta',
-                    'money',
-                    'placements',
-                    'w_ids'
-                ],
-                'required'
-            ],
-            [
-                [
-                    'user_id',
-                    'status',
-                    'is_archive',
-                    'executor_id',
-                    'view_counter',
-                    'response_counter',
-                    
-                    'created_at',
-                    'updated_at',
-                    'created_by',
-                    'updated_by',
-                    'valuta',
-                    'budget_type'
-                ],
-                'integer'
-            ],
-            [
-                [
-                    'description',
-                    'tags',
-                    'money_type',
-                    'placement'
-                ],
-                'string'
-            ],
-            [
-                [
-                    'money'
-                ],
-                'safe'
-            ],
-            [
-                [
-                    'w_ids'
-                ],
-                'safe'
-            ],
-            [
-                [
-                    'placements'
-                ],
-                'safe'
-            ],
-            [
-                [
-                    'budget'
-                ],
-                'number'
-            ],
-            [
-                [
-                    'start',
-                    'deadline'
-                ],
-                'safe'
-            ],
-            [
-                [
-                    'title'
-                ],
-                'string',
-                'max' => 255
-            ],
-            [
-                [
-                    'user_id'
-                ],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => User::className(),
-                'targetAttribute' => [
-                    'user_id' => 'id'
-                ]
-            ]
+            [['title','description', 'budget', 'valuta', 'money', 'placements', 'w_ids', 'start', 'deadline'], 'required'],
+            [['user_id','status','is_archive','executor_id','view_counter','response_counter','created_at','updated_at','created_by',
+              'updated_by','valuta','budget_type'],'integer'],
+            [['description','tags','money_type','placement'],'string'],
+            [['money'],'safe'],
+            [['w_ids'],'safe'],
+            [['placements'],'safe'],
+            [['budget'],'number'],
+            [['start','deadline'],'safe'],
+            [['start', 'deadline'], function ($attribute, $params) {
+                if ( strtotime(date('Y-m-d')) > strtotime($this->$attribute) ) {
+                    $this->addError($attribute, 'Значение не может быть меньше ' . date('d.m.Y'));
+                }
+            }],
+            [['title'],'string','max' => 255],
+            [['user_id'],'exist','skipOnError' => true,'targetClass' => User::className(),'targetAttribute' => ['user_id' => 'id']]
         ];
     }
 

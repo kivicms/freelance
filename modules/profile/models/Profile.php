@@ -174,7 +174,9 @@ class Profile extends \yii\db\ActiveRecord
             'refuse_content' => 'Причина отказа',
             'executed_orders' => 'Выполнено заказов',
             'w_ids' => 'Категории',
-            'fullCompanyName' => 'Полное наименование компании'
+            'fullFio' => 'Контактное лицо',
+            'fullCompanyName' => 'Полное наименование компании',
+            'workingsAsTitleArray' => 'Направления работы'
         ];
     }
 
@@ -226,6 +228,15 @@ class Profile extends \yii\db\ActiveRecord
         $wss = $this->workings;
         foreach ($wss as $ws) {
             $ret[] = $ws->title;
+        }
+        return $ret;
+    }
+    
+    public function getWorkingsArray() {
+        $ret = [];
+        $wss = $this->workings;
+        foreach ($wss as $ws) {
+            $ret[] = $ws->id;
         }
         return $ret;
     }
